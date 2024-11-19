@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvceh4slpgust"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_ah5um"]
+[ext_resource type="Script" path="res://Enemies/king_goblin.gd" id="2_21s7s"]
+[ext_resource type="Texture2D" uid="uid://doxsfgdtqxbxx" path="res://Enemies/sprites/KingGoblin.png" id="3_6b424"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6ves"]
+atlas = ExtResource("3_6b424")
+region = Rect2(0, 0, 500, 500)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0lvn8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y6ves")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="KingGoblin" groups=["Enemies"] instance=ExtResource("1_ah5um")]
+script = ExtResource("2_21s7s")
+king_goblin_max_health = 5000
+king_goblin_attack_damage = 100
+summon_cooldown = 10.0
+area_attack_radius = 150.0
+area_attack_damage = 150
+enemy_name = "Goblin"
+enemy_attack_damage = 28
+enemy_move_speed = 40
+goblin_max_health = 100
+xp_reward = 100
+min_gold_reward = 10
+max_gold_reward = 20
+
+[node name="HP" parent="." index="1"]
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 22.0
+offset_bottom = -17.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_0lvn8")
+animation = &"Idle"
+autoplay = "Idle"
+
+[node name="HealthProgressBAr" parent="." index="6"]
+offset_left = -262.0
+offset_top = -322.0
+offset_right = 265.0
+offset_bottom = -292.0

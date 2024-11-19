@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://d1vk1npsuwi5k"]
+
+[ext_resource type="Script" path="res://Skills/Wizard/black_hole_effect.gd" id="1_pl1if"]
+[ext_resource type="Texture2D" uid="uid://cto3u5e5v6d8v" path="res://Assets/VFX/skillsFX/blackholeskill.png" id="2_xw8gm"]
+[ext_resource type="Texture2D" uid="uid://d2cpqwk8pku3x" path="res://Assets/VFX/skillsFX/black.png" id="3_yrrk1"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sgras"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kolin"]
+atlas = ExtResource("2_xw8gm")
+region = Rect2(110, 0, 110, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etg6c"]
+atlas = ExtResource("2_xw8gm")
+region = Rect2(0, 110, 110, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqrvv"]
+atlas = ExtResource("2_xw8gm")
+region = Rect2(110, 110, 110, 110)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ke6ie"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kolin")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etg6c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqrvv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dcegi"]
+radius = 11.0
+
+[node name="BlackHoleEffect" type="Area2D"]
+script = ExtResource("1_pl1if")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1.622, 1, 3.784, 1)
+z_index = 22
+material = SubResource("CanvasItemMaterial_sgras")
+position = Vector2(1.6263e-19, 0)
+rotation = 6.28319
+scale = Vector2(0.6, 0.6)
+sprite_frames = SubResource("SpriteFrames_ke6ie")
+autoplay = "default"
+frame_progress = 0.767028
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dcegi")
+
+[node name="Black" type="Sprite2D" parent="."]
+scale = Vector2(0.277643, 0.279586)
+texture = ExtResource("3_yrrk1")

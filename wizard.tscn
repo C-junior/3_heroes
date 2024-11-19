@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://brt66rrbwnw6e"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_wosdw"]
+[ext_resource type="Script" path="res://wizard.gd" id="2_u367n"]
+[ext_resource type="Texture2D" uid="uid://be1huw4wyh7le" path="res://Assets/wizardspritesheet.png" id="3_mfssl"]
+[ext_resource type="PackedScene" uid="uid://cqpqjc8jnyd4k" path="res://floating_numbers.tscn" id="4_0qurg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gofn3"]
+atlas = ExtResource("3_mfssl")
+region = Rect2(844, 0, 844, 844)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wiuoe"]
+atlas = ExtResource("3_mfssl")
+region = Rect2(0, 0, 844, 844)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rja0i"]
+atlas = ExtResource("3_mfssl")
+region = Rect2(0, 0, 844, 844)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_st37y"]
+atlas = ExtResource("3_mfssl")
+region = Rect2(844, 0, 844, 844)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vijq7"]
+atlas = ExtResource("3_mfssl")
+region = Rect2(0, 0, 844, 844)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7ka3l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gofn3")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wiuoe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rja0i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_st37y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vijq7")
+}],
+"loop": true,
+"name": &"skill",
+"speed": 5.0
+}]
+
+[node name="Wizard" groups=["PlayerCharacters"] instance=ExtResource("1_wosdw")]
+position = Vector2(146, 79)
+script = ExtResource("2_u367n")
+wizard_attack_damage = 62
+wizard_defense = 5
+wizard_move_speed = 50
+wizard_max_health = 200
+wizard_attack_range = 300.0
+wizard_attack_cooldown = 2.0
+current_item = null
+
+[node name="WizardSprite" type="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(2, 8)
+scale = Vector2(0.09, 0.09)
+sprite_frames = SubResource("SpriteFrames_7ka3l")
+animation = &"skill"
+autoplay = "Idle"
+frame_progress = 0.951842
+flip_h = true
+
+[node name="FloatingNumbers" parent="." index="7" instance=ExtResource("4_0qurg")]

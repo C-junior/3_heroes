@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://dia1umix54hix"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_pv1eu"]
+[ext_resource type="Script" path="res://Enemies/goblin_assassin.gd" id="2_2epx3"]
+[ext_resource type="Texture2D" uid="uid://biwxq5x026ktv" path="res://Enemies/sprites/goblin_assassin.png" id="3_rkn80"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0k1j"]
+atlas = ExtResource("3_rkn80")
+region = Rect2(0, 0, 200, 257)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0lvn8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0k1j")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="Goblin_assassin" groups=["Enemies"] instance=ExtResource("1_pv1eu")]
+script = ExtResource("2_2epx3")
+stealth_duration = 2.0
+enemy_name = "Goblin"
+enemy_attack_damage = 28
+enemy_move_speed = 40
+goblin_max_health = 100
+xp_reward = 100
+min_gold_reward = 10
+max_gold_reward = 20
+
+[node name="HP" parent="." index="1"]
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 22.0
+offset_bottom = -17.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_0lvn8")
+animation = &"Idle"
+autoplay = "Idle"
+flip_h = true

@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://bbfwbrjwui2dd"]
+
+[ext_resource type="Script" path="res://magic_bolt.gd" id="1_258mv"]
+[ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="2_d3qxa"]
+[ext_resource type="Texture2D" uid="uid://ljot0mi4two" path="res://Assets/Icons/magic_shoot_skill.png" id="2_xsud4"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7ibeq"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_edqk8"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80ov6"]
+atlas = ExtResource("2_xsud4")
+region = Rect2(0, 0, 90, 87)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kae1n"]
+atlas = ExtResource("2_xsud4")
+region = Rect2(90, 0, 90, 87)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1xtgt"]
+atlas = ExtResource("2_xsud4")
+region = Rect2(180, 0, 90, 87)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3efs2"]
+atlas = ExtResource("2_xsud4")
+region = Rect2(270, 0, 90, 87)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tnuo5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80ov6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kae1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1xtgt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3efs2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e6n2h"]
+radius = 10.198
+
+[node name="MagicBolt" type="Area2D"]
+self_modulate = Color(1.5, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_7ibeq")
+script = ExtResource("1_258mv")
+
+[node name="glow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 2, 0.703)
+material = SubResource("CanvasItemMaterial_edqk8")
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_d3qxa")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1.07, 1, 1, 1)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_tnuo5")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_e6n2h")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(7.15256e-07, 1)
+rotation = -1.73724
+scale = Vector2(0.0346581, 0.0375634)
+color = Color(1, 1, 0.0431373, 1)
+energy = 1.71
+texture = ExtResource("2_d3qxa")

@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://chgkv5dsnjvcr"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_is0ga"]
+[ext_resource type="Script" path="res://cleric.gd" id="2_yrgk8"]
+[ext_resource type="Texture2D" uid="uid://f202qyr038e4" path="res://Assets/cleric_girl.png" id="3_81bim"]
+[ext_resource type="PackedScene" uid="uid://cqpqjc8jnyd4k" path="res://floating_numbers.tscn" id="4_662if"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8yhb"]
+atlas = ExtResource("3_81bim")
+region = Rect2(0, 0, 158, 299)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45242"]
+atlas = ExtResource("3_81bim")
+region = Rect2(0, 299, 158, 299)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rsilf"]
+atlas = ExtResource("3_81bim")
+region = Rect2(158, 299, 158, 299)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqbic"]
+atlas = ExtResource("3_81bim")
+region = Rect2(158, 0, 158, 299)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_meydk"]
+atlas = ExtResource("3_81bim")
+region = Rect2(316, 299, 158, 299)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q31c4"]
+atlas = ExtResource("3_81bim")
+region = Rect2(316, 0, 158, 299)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7ka3l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h8yhb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45242")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rsilf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqbic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_meydk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q31c4")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="Cleric" groups=["PlayerCharacters"] instance=ExtResource("1_is0ga")]
+position = Vector2(146, 79)
+script = ExtResource("2_yrgk8")
+heal_amount = 40
+heal_cooldown = 2.0
+cleric_max_health = 1000
+attack_range = 150.0
+
+[node name="ClericSprite" type="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_7ka3l")
+animation = &"Idle"
+frame_progress = 0.687952
+
+[node name="heal_text" type="Label" parent="." index="4"]
+visible = false
+offset_left = -20.0
+offset_top = -50.0
+offset_right = 20.0
+offset_bottom = -27.0
+
+[node name="FloatingNumbers" parent="." index="8" instance=ExtResource("4_662if")]

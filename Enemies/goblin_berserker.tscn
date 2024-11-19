@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://dfdnblq2ufsyk"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_6xcnj"]
+[ext_resource type="Script" path="res://Enemies/goblin_berserker.gd" id="2_vpb35"]
+[ext_resource type="Texture2D" uid="uid://ckt3v7o501ncx" path="res://Enemies/sprites/goblin_berserker.png" id="3_dm6o3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ittk"]
+atlas = ExtResource("3_dm6o3")
+region = Rect2(0, 0, 280, 355)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0lvn8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ittk")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="GoblinBerserker" groups=["Enemies"] instance=ExtResource("1_6xcnj")]
+script = ExtResource("2_vpb35")
+frenzy_chance = 0.25
+stealth_duration = 3.0
+enemy_name = "Goblin"
+enemy_attack_damage = 28
+enemy_move_speed = 40
+goblin_max_health = 100
+xp_reward = 100
+min_gold_reward = 10
+max_gold_reward = 20
+
+[node name="HP" parent="." index="1"]
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 22.0
+offset_bottom = -17.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_0lvn8")
+animation = &"Idle"
+autoplay = "Idle"

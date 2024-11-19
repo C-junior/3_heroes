@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://dryra2oqvkefx"]
+
+[ext_resource type="Script" path="res://slot.gd" id="1_dk4m4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2oeyq"]
+bg_color = Color(0.0823529, 0.152941, 0.223529, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.462425, 0.044702, 0.138714, 1)
+border_blend = true
+
+[node name="Slot" type="PanelContainer"]
+custom_minimum_size = Vector2(100, 100)
+offset_right = 100.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2oeyq")
+script = ExtResource("1_dk4m4")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Tooltip" type="Label" parent="."]
+layout_mode = 2
+
+[node name="InvalidLabel" type="Label" parent="."]
+layout_mode = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

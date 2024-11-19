@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1tts0yfudpdg"]
+
+[ext_resource type="Script" path="res://statsdisplay.gd" id="1_ifg4n"]
+
+[node name="StatsDisplay" type="PanelContainer"]
+offset_right = 174.0
+offset_bottom = 81.0
+script = ExtResource("1_ifg4n")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Name" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "   Knight"
+fit_content = true
+
+[node name="AttackLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "   asdda"
+fit_content = true
+
+[node name="DefenseLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "Defe"
+
+[node name="SpeedLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "speed"
+fit_content = true
+
+[node name="HealthLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "HP"
+fit_content = true
+
+[node name="AttackSpeedLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "AS"
+fit_content = true

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1totgydaewyj"]
+
+[ext_resource type="Script" path="res://Skills/Valkyrie/spear_projectile.gd" id="1_c7ovp"]
+[ext_resource type="Texture2D" uid="uid://ggapmk83uokr" path="res://Assets/VFX/skillsFX/spear_thorw.png" id="2_327u0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fk57c"]
+size = Vector2(10, 72)
+
+[node name="SpearProjectile" type="Area2D"]
+script = ExtResource("1_c7ovp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-34, -2)
+rotation = 1.56551
+shape = SubResource("RectangleShape2D_fk57c")
+
+[node name="SpearThorw" type="Sprite2D" parent="."]
+position = Vector2(-34, -2)
+rotation = 1.57703
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_327u0")

@@ -1,0 +1,71 @@
+[gd_scene load_steps=9 format=3 uid="uid://kuka26t1av42"]
+
+[ext_resource type="Script" path="res://main_game.gd" id="1_1xiyh"]
+[ext_resource type="Texture2D" uid="uid://dlplcfdehgpxh" path="res://Assets/arena_bg.jpg" id="1_5dba5"]
+[ext_resource type="PackedScene" uid="uid://djgsammf8qp81" path="res://knight.tscn" id="2_nqt4s"]
+[ext_resource type="PackedScene" uid="uid://chgkv5dsnjvcr" path="res://cleric.tscn" id="3_jng1e"]
+[ext_resource type="PackedScene" uid="uid://dtw80xikug5sq" path="res://valkyrie.tscn" id="5_4l462"]
+[ext_resource type="PackedScene" uid="uid://brt66rrbwnw6e" path="res://wizard.tscn" id="6_y5edn"]
+[ext_resource type="PackedScene" uid="uid://dwusg6yb1iy13" path="res://vendor.tscn" id="11_w0ngy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_n6nty"]
+font_size = 24
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_1xiyh")
+
+[node name="ArenaBg" type="Sprite2D" parent="."]
+position = Vector2(420, 239)
+scale = Vector2(0.822634, 0.960517)
+texture = ExtResource("1_5dba5")
+
+[node name="PlayerCharacters" type="Node2D" parent="."]
+
+[node name="Knight" parent="PlayerCharacters" instance=ExtResource("2_nqt4s")]
+visible = false
+position = Vector2(316, 200)
+
+[node name="Cleric" parent="PlayerCharacters" instance=ExtResource("3_jng1e")]
+position = Vector2(199, 308)
+
+[node name="Valkyrie" parent="PlayerCharacters" instance=ExtResource("5_4l462")]
+position = Vector2(335, 368)
+
+[node name="Wizard" parent="PlayerCharacters" instance=ExtResource("6_y5edn")]
+position = Vector2(189, 409)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="WaveManager" type="Timer" parent="."]
+
+[node name="Vendor" parent="." instance=ExtResource("11_w0ngy")]
+position = Vector2(6, 11)
+frame_progress = 0.617217
+
+[node name="WaveLabel" type="Label" parent="."]
+offset_left = 375.0
+offset_top = 4.0
+offset_right = 415.0
+offset_bottom = 27.0
+label_settings = SubResource("LabelSettings_n6nty")
+
+[node name="knight atk" type="Label" parent="."]
+offset_left = 127.0
+offset_top = 98.0
+offset_right = 167.0
+offset_bottom = 121.0
+text = "speed up"
+
+[node name="knight def" type="Label" parent="."]
+offset_left = 129.0
+offset_top = 69.0
+offset_right = 208.0
+offset_bottom = 92.0
+text = "knight atk"
+
+[node name="Button" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Speed Up"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

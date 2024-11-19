@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6t1l4gdytwiw"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_qkgi1"]
+[ext_resource type="Script" path="res://Enemies/goblin_brute.gd" id="2_6ln65"]
+[ext_resource type="Texture2D" uid="uid://cty1pl8fxfmcm" path="res://Assets/Orc.png" id="3_31nxb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmn0d"]
+atlas = ExtResource("3_31nxb")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2af1m"]
+atlas = ExtResource("3_31nxb")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyt5l"]
+atlas = ExtResource("3_31nxb")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rk0mf"]
+atlas = ExtResource("3_31nxb")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jkl4"]
+atlas = ExtResource("3_31nxb")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtema"]
+atlas = ExtResource("3_31nxb")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0lvn8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmn0d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2af1m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nyt5l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rk0mf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3jkl4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtema")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="GoblinBrute" groups=["Enemies"] instance=ExtResource("1_qkgi1")]
+script = ExtResource("2_6ln65")
+enemy_name = "Goblin"
+enemy_attack_damage = 28
+enemy_move_speed = 40
+goblin_max_health = 100
+xp_reward = 100
+min_gold_reward = 10
+max_gold_reward = 20
+
+[node name="HP" parent="." index="1"]
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 22.0
+offset_bottom = -17.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_0lvn8")
+animation = &"Idle"
+autoplay = "Idle"

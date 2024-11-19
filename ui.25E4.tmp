@@ -1,0 +1,269 @@
+[gd_scene load_steps=7 format=3 uid="uid://ck34trga36w3"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_bhicx"]
+[ext_resource type="Script" path="res://manager.gd" id="2_qn4ti"]
+[ext_resource type="Script" path="res://inventory.gd" id="3_362i1"]
+[ext_resource type="PackedScene" uid="uid://dryra2oqvkefx" path="res://slot.tscn" id="4_uyso4"]
+[ext_resource type="Script" path="res://shop.gd" id="5_mdeu6"]
+[ext_resource type="Script" path="res://character.gd" id="6_qebeb"]
+
+[node name="UI" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_bhicx")
+
+[node name="Manager" type="Panel" parent="."]
+visible = false
+offset_right = 983.0
+offset_bottom = 604.0
+script = ExtResource("2_qn4ti")
+
+[node name="Inventory" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 255.0
+offset_top = 11.0
+offset_right = 815.0
+offset_bottom = 411.0
+columns = 3
+script = ExtResource("3_362i1")
+
+[node name="Slot" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Manager/Inventory/Slot"]
+layout_mode = 2
+text = "Weapon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot2" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 1
+
+[node name="Label2" type="Label" parent="Manager/Inventory/Slot2"]
+layout_mode = 2
+text = "Armor"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot3" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 2
+
+[node name="Label2" type="Label" parent="Manager/Inventory/Slot3"]
+layout_mode = 2
+text = "Acessory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InvKnight" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 255.0
+offset_top = 11.0
+offset_right = 815.0
+offset_bottom = 411.0
+columns = 3
+script = ExtResource("3_362i1")
+
+[node name="Slot" parent="Manager/InvKnight" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+slot_type = 0
+
+[node name="Label2" type="Label" parent="Manager/InvKnight/Slot"]
+layout_mode = 2
+text = "Weapon knight"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot2" parent="Manager/InvKnight" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 1
+
+[node name="Label2" type="Label" parent="Manager/InvKnight/Slot2"]
+layout_mode = 2
+text = "Armor"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot3" parent="Manager/InvKnight" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 2
+
+[node name="Label2" type="Label" parent="Manager/InvKnight/Slot3"]
+layout_mode = 2
+text = "Acessory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InvCleric" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 256.0
+offset_top = 122.0
+offset_right = 816.0
+offset_bottom = 522.0
+columns = 3
+script = ExtResource("3_362i1")
+
+[node name="Slot" parent="Manager/InvCleric" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+slot_type = 0
+
+[node name="Label2" type="Label" parent="Manager/InvCleric/Slot"]
+layout_mode = 2
+text = "Weapon cleric"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot2" parent="Manager/InvCleric" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 1
+
+[node name="Label2" type="Label" parent="Manager/InvCleric/Slot2"]
+layout_mode = 2
+text = "Armor cleric"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot3" parent="Manager/InvCleric" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 2
+
+[node name="Label2" type="Label" parent="Manager/InvCleric/Slot3"]
+layout_mode = 2
+text = "Acessory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Shop" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 147.0
+offset_top = 343.0
+offset_right = 663.0
+offset_bottom = 443.0
+columns = 5
+script = ExtResource("5_mdeu6")
+
+[node name="Slot" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot2" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot3" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot4" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot5" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Character" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 21.0
+offset_top = 186.0
+offset_right = 537.0
+offset_bottom = 286.0
+columns = 5
+script = ExtResource("6_qebeb")
+
+[node name="Slot" parent="Manager/Character" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot2" parent="Manager/Character" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot3" parent="Manager/Character" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Currency" type="HBoxContainer" parent="Manager"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 339.0
+offset_right = 97.0
+offset_bottom = 379.0
+
+[node name="Label" type="Label" parent="Manager/Currency"]
+layout_mode = 2
+text = "Gold"
+
+[node name="Balance" type="Label" parent="Manager/Currency"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="RerollButton" type="Button" parent="Manager"]
+layout_mode = 2
+offset_left = 30.0
+offset_top = 398.0
+offset_right = 122.0
+offset_bottom = 429.0
+text = "Reroll"
+
+[node name="CloseButton" type="Button" parent="Manager"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Next wave"
+
+[node name="Knight" type="Label" parent="Manager"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 49.0
+offset_right = 226.0
+offset_bottom = 72.0
+text = "Knight"
+
+[node name="Archer" type="Label" parent="Manager"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 144.0
+offset_right = 237.0
+offset_bottom = 167.0
+text = "Archer"
+
+[node name="Cleric" type="Label" parent="Manager"]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 256.0
+offset_right = 231.0
+offset_bottom = 279.0
+text = "Cleric"
+
+[node name="knight_button" type="Button" parent="."]
+offset_left = 8.0
+offset_top = 124.0
+offset_right = 145.0
+offset_bottom = 155.0
+text = "Knight Inventory"
+
+[node name="cleric_button" type="Button" parent="."]
+offset_left = 11.0
+offset_top = 162.0
+offset_right = 141.0
+offset_bottom = 193.0
+text = "Cleric Inventory"
+
+[connection signal="pressed" from="Manager/RerollButton" to="Manager/Shop" method="_on_reroll_button_pressed"]
+[connection signal="pressed" from="Manager/CloseButton" to="Manager/Shop" method="_on_close_button_pressed"]
+[connection signal="pressed" from="knight_button" to="." method="_on_knight_button_pressed"]
+[connection signal="pressed" from="cleric_button" to="." method="_on_cleric_button_pressed"]

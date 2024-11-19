@@ -1,0 +1,135 @@
+[gd_scene load_steps=20 format=3 uid="uid://dtw80xikug5sq"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_jwpo7"]
+[ext_resource type="Script" path="res://valkyrie.gd" id="2_ifn4l"]
+[ext_resource type="Texture2D" uid="uid://djxi1itx7tnh4" path="res://Assets/valkyrie.png" id="3_mt4g6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8woa5"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(0, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t2y2b"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(730, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a0epy"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(1460, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lnc31"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(2190, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7uil2"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(2920, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6v2lx"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(3650, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cph4k"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(4380, 0, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkvws"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(0, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hpck"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(730, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_01fwj"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(1460, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkolb"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(2190, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ove6j"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(2920, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fa24o"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(3650, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wndi"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(4380, 822, 730, 822)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_who0i"]
+atlas = ExtResource("3_mt4g6")
+region = Rect2(5110, 822, 730, 822)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r6m0a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8woa5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t2y2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a0epy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lnc31")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7uil2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6v2lx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cph4k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkvws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hpck")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_01fwj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkolb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ove6j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fa24o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wndi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_who0i")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[node name="Valkyrie" groups=["PlayerCharacters"] instance=ExtResource("1_jwpo7")]
+script = ExtResource("2_ifn4l")
+valkyrie_attack_damage = 70
+valkyrie_defense = 8
+valkyrie_move_speed = 85
+valkyrie_max_health = 350
+valkyrie_attack_cooldown = 1.2
+current_item = null
+
+[node name="ValkyrieSprite" type="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_r6m0a")
+animation = &"Idle"
+autoplay = "Idle"
+frame_progress = 0.0368534
+flip_h = true

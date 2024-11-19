@@ -1,0 +1,245 @@
+[gd_scene load_steps=6 format=3 uid="uid://ck34trga36w3"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_bhicx"]
+[ext_resource type="Script" path="res://manager.gd" id="2_qn4ti"]
+[ext_resource type="Script" path="res://inventory.gd" id="3_362i1"]
+[ext_resource type="PackedScene" uid="uid://dryra2oqvkefx" path="res://slot.tscn" id="4_uyso4"]
+[ext_resource type="Script" path="res://shop.gd" id="5_mdeu6"]
+
+[node name="UI" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_bhicx")
+
+[node name="Manager" type="Panel" parent="."]
+visible = false
+offset_right = 983.0
+offset_bottom = 604.0
+script = ExtResource("2_qn4ti")
+
+[node name="Inventory" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 255.0
+offset_top = 11.0
+offset_right = 815.0
+offset_bottom = 411.0
+columns = 3
+script = ExtResource("3_362i1")
+
+[node name="Slot" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+slot_type = 0
+
+[node name="Label2" type="Label" parent="Manager/Inventory/Slot"]
+layout_mode = 2
+text = "Weapon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot2" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 1
+
+[node name="Label2" type="Label" parent="Manager/Inventory/Slot2"]
+layout_mode = 2
+text = "Armor"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot3" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+tooltip_text = "Weapon
+"
+slot_type = 2
+
+[node name="Label2" type="Label" parent="Manager/Inventory/Slot3"]
+layout_mode = 2
+text = "Acessory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Shop" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 150.0
+offset_top = 282.0
+offset_right = 666.0
+offset_bottom = 486.0
+columns = 5
+script = ExtResource("5_mdeu6")
+
+[node name="Slot" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot2" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot3" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot4" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot5" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot6" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot7" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot8" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot9" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot10" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="RerollButton" type="Button" parent="Manager"]
+layout_mode = 2
+offset_left = 30.0
+offset_top = 398.0
+offset_right = 122.0
+offset_bottom = 429.0
+text = "Reroll"
+
+[node name="CloseButton" type="Button" parent="Manager"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Next wave"
+
+[node name="knight_button" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 51.0
+offset_top = 172.0
+offset_right = 188.0
+offset_bottom = 203.0
+text = "Knight Inventory"
+
+[node name="valkyrie_button" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 47.0
+offset_top = 135.0
+offset_right = 196.0
+offset_bottom = 166.0
+text = "Valkyrie Inventory"
+
+[node name="cleric_button" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 54.0
+offset_top = 210.0
+offset_right = 184.0
+offset_bottom = 241.0
+text = "Cleric Inventory"
+
+[node name="Inventory_switch" type="Panel" parent="."]
+visible = false
+offset_left = 183.0
+offset_top = 37.0
+offset_right = 244.0
+offset_bottom = 77.0
+
+[node name="ativechar" type="Button" parent="Inventory_switch"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 5.0
+offset_right = 59.0
+offset_bottom = 36.0
+text = "knight"
+
+[node name="Currency" type="HBoxContainer" parent="."]
+offset_left = 47.0
+offset_top = 339.0
+offset_right = 97.0
+offset_bottom = 379.0
+
+[node name="Label" type="Label" parent="Currency"]
+layout_mode = 2
+text = "Gold"
+
+[node name="Balance" type="Label" parent="Currency"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SkillPanel" type="Panel" parent="."]
+offset_left = 67.0
+offset_top = 44.0
+offset_right = 675.0
+offset_bottom = 426.0
+
+[node name="SkillPopupKnight" type="HBoxContainer" parent="SkillPanel"]
+layout_mode = 0
+offset_left = 159.0
+offset_top = 100.0
+offset_right = 199.0
+offset_bottom = 140.0
+
+[node name="KnightButton1" type="Button" parent="SkillPanel/SkillPopupKnight"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="KnightButton2" type="Button" parent="SkillPanel/SkillPopupKnight"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="KnightButton3" type="Button" parent="SkillPanel/SkillPopupKnight"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="SkillPopupCleric" type="HBoxContainer" parent="SkillPanel"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 178.0
+offset_right = 200.0
+offset_bottom = 218.0
+
+[node name="ClericButton1" type="Button" parent="SkillPanel/SkillPopupCleric"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ClericButton2" type="Button" parent="SkillPanel/SkillPopupCleric"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ClericButton3" type="Button" parent="SkillPanel/SkillPopupCleric"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="SkillPopupValkyrie" type="HBoxContainer" parent="SkillPanel"]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 250.0
+offset_right = 203.0
+offset_bottom = 290.0
+
+[node name="ValkyrieButton1" type="Button" parent="SkillPanel/SkillPopupValkyrie"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ValkyrieButton2" type="Button" parent="SkillPanel/SkillPopupValkyrie"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ValkyrieButton3" type="Button" parent="SkillPanel/SkillPopupValkyrie"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ConfirmButton" type="Button" parent="SkillPanel"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 328.0
+offset_right = 176.0
+offset_bottom = 336.0
+text = "Voltar pro Game"
+
+[connection signal="pressed" from="Manager/RerollButton" to="Manager/Shop" method="_on_reroll_button_pressed"]
+[connection signal="pressed" from="Manager/CloseButton" to="Manager/Shop" method="_on_close_button_pressed"]
+[connection signal="pressed" from="knight_button" to="." method="_on_knight_button_pressed"]
+[connection signal="pressed" from="valkyrie_button" to="." method="_on_valkyrie_button_pressed"]
+[connection signal="pressed" from="cleric_button" to="." method="_on_cleric_button_pressed"]

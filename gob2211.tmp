@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://vivlve83726s"]
+
+[ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_w23yf"]
+[ext_resource type="Texture2D" uid="uid://cyw74tijg6uoh" path="res://Assets/slime_green.png" id="2_1d7wa"]
+[ext_resource type="Script" path="res://enemy.gd" id="2_y8wxr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t16f6"]
+atlas = ExtResource("2_1d7wa")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dpl4d"]
+atlas = ExtResource("2_1d7wa")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kynwk"]
+atlas = ExtResource("2_1d7wa")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_611as"]
+atlas = ExtResource("2_1d7wa")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3xvs"]
+atlas = ExtResource("2_1d7wa")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wbkq"]
+atlas = ExtResource("2_1d7wa")
+region = Rect2(24, 48, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0lvn8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t16f6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dpl4d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kynwk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_611as")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k3xvs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wbkq")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="Goblin" groups=["Enemies"] instance=ExtResource("1_w23yf")]
+script = ExtResource("2_y8wxr")
+enemy_name = "Goblin"
+enemy_attack_damage = 18
+enemy_move_speed = 40
+goblin_max_health = 1000
+xp_reward = 100
+gold_reward = 20
+
+[node name="HP" parent="." index="1"]
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 22.0
+offset_bottom = -17.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_0lvn8")
+animation = &"Idle"
+autoplay = "Idle"

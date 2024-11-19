@@ -1,0 +1,110 @@
+[gd_scene load_steps=8 format=3 uid="uid://ck34trga36w3"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_bhicx"]
+[ext_resource type="Script" path="res://manager.gd" id="2_qn4ti"]
+[ext_resource type="Script" path="res://inventory.gd" id="3_362i1"]
+[ext_resource type="PackedScene" uid="uid://dryra2oqvkefx" path="res://slot.tscn" id="4_uyso4"]
+[ext_resource type="Script" path="res://shop.gd" id="5_mdeu6"]
+[ext_resource type="Script" path="res://Item.gd" id="6_aufeo"]
+[ext_resource type="Resource" uid="uid://bwyk0npcvoi7f" path="res://Assets/Items/Ring.tres" id="7_pnlla"]
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_bhicx")
+
+[node name="Manager" type="Panel" parent="."]
+visible = false
+offset_right = 983.0
+offset_bottom = 604.0
+script = ExtResource("2_qn4ti")
+
+[node name="Inventory" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 126.0
+offset_top = 68.0
+offset_right = 686.0
+offset_bottom = 468.0
+columns = 5
+script = ExtResource("3_362i1")
+
+[node name="Slot" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot2" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot3" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot4" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot5" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot6" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot7" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot8" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot9" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot10" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Shop" type="GridContainer" parent="Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 147.0
+offset_top = 343.0
+offset_right = 663.0
+offset_bottom = 443.0
+columns = 5
+script = ExtResource("5_mdeu6")
+items = Array[ExtResource("6_aufeo")]([ExtResource("7_pnlla"), ExtResource("7_pnlla")])
+
+[node name="Slot" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot2" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot3" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot4" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="Slot5" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="Manager/Shop"]
+layout_mode = 2
+text = "Next Wave"
+
+[node name="RerollButton" type="Button" parent="Manager/Shop"]
+layout_mode = 2
+text = "Reroll"
+
+[node name="Currency" type="HBoxContainer" parent="Manager"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 272.0
+offset_right = 189.0
+offset_bottom = 312.0
+
+[node name="Label" type="Label" parent="Manager/Currency"]
+layout_mode = 2
+text = "Gold"
+
+[node name="Balance" type="Label" parent="Manager/Currency"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[connection signal="pressed" from="Manager/Shop/CloseButton" to="Manager/Shop" method="_on_close_button_pressed"]

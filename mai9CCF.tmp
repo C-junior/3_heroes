@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://kuka26t1av42"]
+
+[ext_resource type="Script" path="res://main_game.gd" id="1_1xiyh"]
+[ext_resource type="Texture2D" uid="uid://dlplcfdehgpxh" path="res://Assets/arena_bg.jpg" id="1_5dba5"]
+[ext_resource type="PackedScene" uid="uid://djgsammf8qp81" path="res://knight.tscn" id="2_nqt4s"]
+[ext_resource type="PackedScene" uid="uid://chgkv5dsnjvcr" path="res://cleric.tscn" id="3_jng1e"]
+[ext_resource type="PackedScene" uid="uid://dwusg6yb1iy13" path="res://vendor.tscn" id="11_w0ngy"]
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_1xiyh")
+
+[node name="ArenaBg" type="Sprite2D" parent="."]
+position = Vector2(420, 239)
+scale = Vector2(0.822634, 0.960517)
+texture = ExtResource("1_5dba5")
+
+[node name="PlayerCharacters" type="Node2D" parent="."]
+
+[node name="Knight" parent="PlayerCharacters" instance=ExtResource("2_nqt4s")]
+position = Vector2(285, 266)
+
+[node name="Cleric" parent="PlayerCharacters" instance=ExtResource("3_jng1e")]
+position = Vector2(199, 308)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="WaveManager" type="Timer" parent="."]
+
+[node name="Vendor" parent="." instance=ExtResource("11_w0ngy")]
+position = Vector2(277, 42)

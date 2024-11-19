@@ -1,0 +1,108 @@
+[gd_scene load_steps=8 format=3 uid="uid://grhlehxrk5sp"]
+
+[ext_resource type="Script" path="res://Skills/Cleric/healing_light_effect.gd" id="1_lnlm0"]
+[ext_resource type="Texture2D" uid="uid://df0mrituftvph" path="res://Assets/VFX/skillsFX/Holy VFX 02.png" id="1_o0jai"]
+[ext_resource type="Texture2D" uid="uid://bk0vj4qldx6ca" path="res://Assets/VFX/effect.png" id="2_ovqlk"]
+
+[sub_resource type="Animation" id="Animation_t3m4l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HolyVfx02:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Effect:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_g4hea"]
+resource_name = "healing"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HolyVfx02:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Effect:frame")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 5, 5, 6, 7, 8, 9]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2gkpl"]
+_data = {
+"RESET": SubResource("Animation_t3m4l"),
+"healing": SubResource("Animation_g4hea")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_r1eev"]
+blend_mode = 1
+
+[node name="HealingLightEffect" type="Node2D"]
+z_index = 80
+script = ExtResource("1_lnlm0")
+
+[node name="HolyVfx02" type="Sprite2D" parent="."]
+position = Vector2(0, 14)
+texture = ExtResource("1_o0jai")
+hframes = 16
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2gkpl")
+}
+autoplay = "healing"
+speed_scale = 0.515
+
+[node name="Effect" type="Sprite2D" parent="."]
+self_modulate = Color(2.703, 2.162, 1, 1)
+material = SubResource("CanvasItemMaterial_r1eev")
+position = Vector2(0, 9)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_ovqlk")
+hframes = 10
+vframes = 5

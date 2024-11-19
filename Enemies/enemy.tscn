@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1hsjg47ej8ad"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kbpk2"]
+
+[node name="Enemy" type="CharacterBody2D"]
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_kbpk2")

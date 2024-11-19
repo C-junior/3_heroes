@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dc8w44chwbfvn"]
+
+[ext_resource type="Script" path="res://Skills/Wizard/chain_lightning_effect.gd" id="1_5gw33"]
+[ext_resource type="Texture2D" uid="uid://eneugdnltijg" path="res://Assets/VFX/skillsFX/lightning.png" id="2_lihme"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j2ex0"]
+blend_mode = 1
+light_mode = 1
+
+[node name="ChainLightningEffect" type="Node2D"]
+script = ExtResource("1_5gw33")
+
+[node name="Line2D" type="Line2D" parent="."]
+self_modulate = Color(1, 1, 2.162, 1)
+material = SubResource("CanvasItemMaterial_j2ex0")
+points = PackedVector2Array(92, 0, 54, 9, 31, -4, -2, 4)
+default_color = Color(1, 1, 1.5, 1)
+texture = ExtResource("2_lihme")
+texture_mode = 2

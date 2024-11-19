@@ -1,0 +1,92 @@
+[gd_scene load_steps=14 format=3 uid="uid://d328jmepvmjpa"]
+
+[ext_resource type="Script" path="res://Skills/Wizard/meteor_strike_area.gd" id="1_trnv2"]
+[ext_resource type="Texture2D" uid="uid://d2710flsj7ts8" path="res://Assets/VFX/skillsFX/spritesheet-512px-by-197px-per-frame.png" id="2_bojgf"]
+[ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="3_x3bnn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ocyxu"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tvwyi"]
+blend_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dkeh"]
+atlas = ExtResource("2_bojgf")
+region = Rect2(0, 0, 512, 197)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmihn"]
+atlas = ExtResource("2_bojgf")
+region = Rect2(512, 0, 512, 197)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gk08p"]
+atlas = ExtResource("2_bojgf")
+region = Rect2(1024, 0, 512, 197)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64vxy"]
+atlas = ExtResource("2_bojgf")
+region = Rect2(0, 197, 512, 197)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t608h"]
+atlas = ExtResource("2_bojgf")
+region = Rect2(512, 197, 512, 197)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_doevg"]
+atlas = ExtResource("2_bojgf")
+region = Rect2(1024, 197, 512, 197)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1ah7c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dkeh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmihn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gk08p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64vxy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t608h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_doevg")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}]
+
+[sub_resource type="Environment" id="Environment_u8xu5"]
+ambient_light_color = Color(3.243, 0, 0, 1)
+glow_enabled = true
+glow_intensity = 0.97
+glow_bloom = 0.08
+
+[node name="Meteor_strike" type="Area2D"]
+script = ExtResource("1_trnv2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ocyxu")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(2.703, 1.622, 1, 1)
+material = SubResource("CanvasItemMaterial_tvwyi")
+position = Vector2(-5, -46)
+scale = Vector2(0.472656, 0.597656)
+texture = ExtResource("3_x3bnn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-38, -226)
+rotation = -1.57404
+sprite_frames = SubResource("SpriteFrames_1ah7c")
+animation = &"fall"
+autoplay = "fall"
+frame_progress = 0.0977321
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u8xu5")

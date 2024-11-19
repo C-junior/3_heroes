@@ -1,0 +1,143 @@
+[gd_scene load_steps=13 format=3 uid="uid://kuka26t1av42"]
+
+[ext_resource type="Script" path="res://main_game.gd" id="1_1xiyh"]
+[ext_resource type="Texture2D" uid="uid://dlplcfdehgpxh" path="res://Assets/arena_bg.jpg" id="1_5dba5"]
+[ext_resource type="PackedScene" uid="uid://djgsammf8qp81" path="res://knight.tscn" id="2_nqt4s"]
+[ext_resource type="PackedScene" uid="uid://chgkv5dsnjvcr" path="res://cleric.tscn" id="3_jng1e"]
+[ext_resource type="Script" path="res://inventory.gd" id="5_3x25a"]
+[ext_resource type="Script" path="res://manager.gd" id="5_gd3fg"]
+[ext_resource type="PackedScene" uid="uid://dryra2oqvkefx" path="res://slot.tscn" id="5_j8r7e"]
+[ext_resource type="Script" path="res://shop.gd" id="7_mt2ck"]
+[ext_resource type="Script" path="res://Item.gd" id="8_vqf5o"]
+[ext_resource type="Resource" uid="uid://bwyk0npcvoi7f" path="res://Assets/Items/Ring.tres" id="9_i48ji"]
+[ext_resource type="PackedScene" uid="uid://dwusg6yb1iy13" path="res://vendor.tscn" id="11_w0ngy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ndrdt"]
+font_size = 40
+font_color = Color(0.956863, 0, 0, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_1xiyh")
+
+[node name="ArenaBg" type="Sprite2D" parent="."]
+position = Vector2(420, 239)
+scale = Vector2(0.822634, 0.960517)
+texture = ExtResource("1_5dba5")
+
+[node name="PlayerCharacters" type="Node2D" parent="."]
+
+[node name="Knight" parent="PlayerCharacters" instance=ExtResource("2_nqt4s")]
+position = Vector2(285, 266)
+
+[node name="Cleric" parent="PlayerCharacters" instance=ExtResource("3_jng1e")]
+position = Vector2(199, 308)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="WaveManager" type="Timer" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="WaveLabel" type="Label" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -67.5
+offset_right = 67.5
+offset_bottom = 55.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+text = "asdasd"
+label_settings = SubResource("LabelSettings_ndrdt")
+
+[node name="Manager" type="Panel" parent="UI"]
+offset_right = 983.0
+offset_bottom = 604.0
+script = ExtResource("5_gd3fg")
+
+[node name="Inventory" type="GridContainer" parent="UI/Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 126.0
+offset_top = 68.0
+offset_right = 686.0
+offset_bottom = 468.0
+columns = 5
+script = ExtResource("5_3x25a")
+
+[node name="Slot" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot2" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot3" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot4" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot5" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot6" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot7" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot8" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot9" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot10" parent="UI/Manager/Inventory" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Shop" type="GridContainer" parent="UI/Manager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 147.0
+offset_top = 343.0
+offset_right = 663.0
+offset_bottom = 443.0
+columns = 5
+script = ExtResource("7_mt2ck")
+items = Array[ExtResource("8_vqf5o")]([ExtResource("9_i48ji"), ExtResource("9_i48ji")])
+
+[node name="Slot" parent="UI/Manager/Shop" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot2" parent="UI/Manager/Shop" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot3" parent="UI/Manager/Shop" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot4" parent="UI/Manager/Shop" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Slot5" parent="UI/Manager/Shop" instance=ExtResource("5_j8r7e")]
+layout_mode = 2
+
+[node name="Currency" type="HBoxContainer" parent="UI/Manager"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 272.0
+offset_right = 189.0
+offset_bottom = 312.0
+
+[node name="Label" type="Label" parent="UI/Manager/Currency"]
+layout_mode = 2
+text = "Gold"
+
+[node name="Balance" type="Label" parent="UI/Manager/Currency"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="Vendor" parent="." instance=ExtResource("11_w0ngy")]
+position = Vector2(277, 42)
