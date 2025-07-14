@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cvceh4slpgust"]
 
 [ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_ah5um"]
-[ext_resource type="Script" path="res://Enemies/king_goblin.gd" id="2_21s7s"]
+[ext_resource type="Script" uid="uid://7bxify54apkx" path="res://Enemies/king_goblin.gd" id="2_21s7s"]
 [ext_resource type="Texture2D" uid="uid://doxsfgdtqxbxx" path="res://Enemies/sprites/KingGoblin.png" id="3_6b424"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y6ves"]

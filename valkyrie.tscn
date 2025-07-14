@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=3 uid="uid://dtw80xikug5sq"]
 
 [ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_jwpo7"]
-[ext_resource type="Script" path="res://valkyrie.gd" id="2_ifn4l"]
+[ext_resource type="Script" uid="uid://b62iiaosl40j6" path="res://valkyrie.gd" id="2_ifn4l"]
 [ext_resource type="Texture2D" uid="uid://djxi1itx7tnh4" path="res://Assets/valkyrie.png" id="3_mt4g6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8woa5"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://d1vk1npsuwi5k"]
 
-[ext_resource type="Script" path="res://Skills/Wizard/black_hole_effect.gd" id="1_pl1if"]
+[ext_resource type="Script" uid="uid://b5jn5l08v7eta" path="res://Skills/Wizard/black_hole_effect.gd" id="1_pl1if"]
 [ext_resource type="Texture2D" uid="uid://cto3u5e5v6d8v" path="res://Assets/VFX/skillsFX/blackholeskill.png" id="2_xw8gm"]
 [ext_resource type="Texture2D" uid="uid://d2cpqwk8pku3x" path="res://Assets/VFX/skillsFX/black.png" id="3_yrrk1"]
 

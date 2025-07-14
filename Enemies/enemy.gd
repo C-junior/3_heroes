@@ -29,14 +29,10 @@ func _ready():
 	taunt_timer.connect("timeout", Callable(self, "_on_taunt_end"))
 
 func _process(delta: float):
-	# If taunt is active, attack the knight
-	if target and taunt_timer and taunt_timer.time_left > 0:
+
+	target = find_nearest_target("PlayerCharacters")
+	if target:
 		move_and_attack(target, delta)
-	else:
-		# Find nearest player character to attack if not taunted
-		target = find_nearest_target("PlayerCharacters")
-		if target:
-			move_and_attack(target, delta)
 
 	# Apply knockback if there is any force left
 	if knockback_velocity.length() > 0:
@@ -80,16 +76,6 @@ func restore_speed():
 	sprite.modulate = Color(1, 1, 1)
 	is_slowed = false
 
-# Force the enemy to attack the taunting knight
-func force_attack(taunting_character: BaseCharacter, duration: float) -> void:
-	# Set the knight as the new target
-	target = taunting_character
-	taunt_timer.start(duration)  # Start the taunt timer to ensure the target stays the same
-	print("Forced to attack knight:", target.name)
-
-# Called when the taunt duration ends
-func _on_taunt_end() -> void:
-	target = null  # Reset the target after taunt ends
 
 @export var xp_reward: int = 100
 @export var min_gold_reward: int = 10  # Minimum gold to drop

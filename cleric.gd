@@ -2,7 +2,7 @@ extends BaseCharacter
 
 @export var heal_amount: int = 40
 @export var heal_cooldown: float = 2.0
-@export var cleric_max_health: int = 1000
+@export var cleric_max_health: int = 500
 
 @onready var sprite = $ClericSprite
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dia1umix54hix"]
 
 [ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_pv1eu"]
-[ext_resource type="Script" path="res://Enemies/goblin_assassin.gd" id="2_2epx3"]
+[ext_resource type="Script" uid="uid://d3jplr7psiyhl" path="res://Enemies/goblin_assassin.gd" id="2_2epx3"]
 [ext_resource type="Texture2D" uid="uid://biwxq5x026ktv" path="res://Enemies/sprites/goblin_assassin.png" id="3_rkn80"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l0k1j"]

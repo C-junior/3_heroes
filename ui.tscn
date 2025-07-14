@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://ck34trga36w3"]
 
-[ext_resource type="Script" path="res://ui.gd" id="1_bhicx"]
-[ext_resource type="Script" path="res://manager.gd" id="2_qn4ti"]
-[ext_resource type="Script" path="res://inventory.gd" id="3_362i1"]
+[ext_resource type="Script" uid="uid://qfajfpklso6k" path="res://ui.gd" id="1_bhicx"]
+[ext_resource type="Script" uid="uid://8mbv4s1be2bk" path="res://manager.gd" id="2_qn4ti"]
+[ext_resource type="Script" uid="uid://bwi5ucngjd07m" path="res://inventory.gd" id="3_362i1"]
 [ext_resource type="PackedScene" uid="uid://dryra2oqvkefx" path="res://slot.tscn" id="4_uyso4"]
-[ext_resource type="Script" path="res://shop.gd" id="5_mdeu6"]
+[ext_resource type="Script" uid="uid://by4xhbiiq3jiu" path="res://shop.gd" id="5_mdeu6"]
 [ext_resource type="PackedScene" uid="uid://b1tts0yfudpdg" path="res://statsdisplay.tscn" id="6_85g5e"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lup7p"]
@@ -126,14 +126,6 @@ offset_top = 138.0
 offset_right = 428.0
 offset_bottom = 273.0
 
-[node name="knight_button" type="Button" parent="."]
-unique_name_in_owner = true
-offset_left = 46.0
-offset_top = 108.0
-offset_right = 183.0
-offset_bottom = 139.0
-text = "Knight Inventory"
-
 [node name="valkyrie_button" type="Button" parent="."]
 unique_name_in_owner = true
 offset_left = 46.0
@@ -188,38 +180,17 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="SkillPanel" type="Panel" parent="."]
-offset_left = 51.0
+offset_left = 25.0
 offset_top = 6.0
 offset_right = 703.0
 offset_bottom = 476.0
 
-[node name="SkillPopupKnight" type="HBoxContainer" parent="SkillPanel"]
-layout_mode = 0
-offset_left = 55.0
-offset_top = 6.0
-offset_right = 304.0
-offset_bottom = 86.0
-alignment = 1
-
-[node name="KnightButton1" type="Button" parent="SkillPanel/SkillPopupKnight"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Shield Bashing"
-
-[node name="KnightButton2" type="Button" parent="SkillPanel/SkillPopupKnight"]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="KnightButton3" type="Button" parent="SkillPanel/SkillPopupKnight"]
-layout_mode = 2
-size_flags_horizontal = 0
-
 [node name="SkillPopupCleric" type="HBoxContainer" parent="SkillPanel"]
 layout_mode = 0
-offset_left = 55.0
-offset_top = 230.0
-offset_right = 95.0
-offset_bottom = 270.0
+offset_left = 4.0
+offset_top = 165.0
+offset_right = 44.0
+offset_bottom = 205.0
 alignment = 1
 
 [node name="ClericButton1" type="Button" parent="SkillPanel/SkillPopupCleric"]
@@ -236,10 +207,10 @@ size_flags_horizontal = 0
 
 [node name="SkillPopupValkyrie" type="HBoxContainer" parent="SkillPanel"]
 layout_mode = 0
-offset_left = 55.0
-offset_top = 118.0
-offset_right = 95.0
-offset_bottom = 158.0
+offset_left = 4.0
+offset_top = 49.0
+offset_right = 44.0
+offset_bottom = 89.0
 alignment = 1
 
 [node name="ValkyrieButton1" type="Button" parent="SkillPanel/SkillPopupValkyrie"]
@@ -256,10 +227,10 @@ size_flags_horizontal = 0
 
 [node name="SkillPopupWizard" type="HBoxContainer" parent="SkillPanel"]
 layout_mode = 0
-offset_left = 55.0
-offset_top = 342.0
-offset_right = 95.0
-offset_bottom = 382.0
+offset_left = 4.0
+offset_top = 275.0
+offset_right = 44.0
+offset_bottom = 315.0
 alignment = 1
 
 [node name="WizardButton1" type="Button" parent="SkillPanel/SkillPopupWizard"]
@@ -284,7 +255,6 @@ text = "Back to Game"
 
 [connection signal="pressed" from="Manager/RerollButton" to="Manager/Shop" method="_on_reroll_button_pressed"]
 [connection signal="pressed" from="Manager/CloseButton" to="Manager/Shop" method="_on_close_button_pressed"]
-[connection signal="pressed" from="knight_button" to="." method="_on_knight_button_pressed"]
 [connection signal="pressed" from="valkyrie_button" to="." method="_on_valkyrie_button_pressed"]
 [connection signal="pressed" from="wizard_button" to="." method="_on_wizard_button_pressed"]
 [connection signal="pressed" from="cleric_button" to="." method="_on_cleric_button_pressed"]

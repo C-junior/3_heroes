@@ -1,14 +1,13 @@
 res://main_game.tscn
 res://slot.gd
 res://main_game.gd
-res://knight.gd
 res://popup_location.gd
 res://Skills/charge.gd
+res://knight.gd
 res://Skills/Wizard/fireball_shader.tres
 res://base_character.tscn
 res://cleric.tscn
 res://Enemies/goblin.tscn
-res://knight.tscn
 res://floating_numbers.tscn
 res://ui.tscn
 res://level_system.tscn
@@ -34,4 +33,7 @@ res://statsdisplay.tscn
 res://Skills/Valkyrie/spear_projectile.tscn
 res://Skills/Cleric/healing_light_effect.tscn
 res://Skills/Cleric/radiant_aura_effect.tscn
-res://statsdisplay.gd
+res://Skills/Cleric/mass_heal_effect.tscn
+res://Skills/Cleric/purifying_wave_effect.tscn
+res://Skills/Cleric/divine_shield_effect.tscn
+res://Skills/Valkyrie/valhallas_call_effect.tscn

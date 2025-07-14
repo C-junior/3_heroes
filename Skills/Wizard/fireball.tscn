@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://ce7k72gp8ixbi"]
 
-[ext_resource type="Script" path="res://Skills/Wizard/fire_ball.gd" id="1_pwp6n"]
+[ext_resource type="Script" uid="uid://0n1upa2t51fu" path="res://Skills/Wizard/fire_ball.gd" id="1_pwp6n"]
 [ext_resource type="Texture2D" uid="uid://cml66u1eb3rpo" path="res://Assets/Icons/fireball_icon.png" id="1_uknnq"]
 [ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="2_po3vs"]
 
@@ -8,6 +8,7 @@
 background_mode = 3
 ambient_light_source = 1
 reflected_light_source = 1
+glow_enabled = true
 glow_intensity = 1.89
 glow_bloom = 0.22
 glow_hdr_threshold = 1.33
@@ -44,6 +45,7 @@ emission_ring_axis = Vector3(0, 0, 1)
 emission_ring_height = 30.0
 emission_ring_radius = 30.0
 emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
 spread = 0.0
 initial_velocity_min = -500.0
 initial_velocity_max = -400.0
@@ -93,10 +95,10 @@ material = SubResource("CanvasItemMaterial_deojv")
 position = Vector2(-3, 3)
 rotation = -0.104007
 amount = 10
-process_material = SubResource("ParticleProcessMaterial_bp7a8")
 texture = ExtResource("2_po3vs")
 lifetime = 0.15
 fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_bp7a8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_sl1cr")

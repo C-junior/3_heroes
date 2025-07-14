@@ -9,11 +9,6 @@ extends Node2D
 @onready var shop_ui = $Shop
 @onready var wave_manager_timer: Timer = $WaveManager  # Timer managing wave intervals
 
-
-@onready var knight_def: Label = $"knight def"
-@onready var knight_atk: Label = $"knight atk"
-@onready var knight: CharacterBody2D = $PlayerCharacters/Knight
-
 @onready var ui = UI
 
 var current_wave = 1

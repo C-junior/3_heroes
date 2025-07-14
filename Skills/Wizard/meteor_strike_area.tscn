@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://d328jmepvmjpa"]
 
-[ext_resource type="Script" path="res://Skills/Wizard/meteor_strike_area.gd" id="1_trnv2"]
+[ext_resource type="Script" uid="uid://gbg7i0f8lfyl" path="res://Skills/Wizard/meteor_strike_area.gd" id="1_trnv2"]
 [ext_resource type="Texture2D" uid="uid://d2710flsj7ts8" path="res://Assets/VFX/skillsFX/spritesheet-512px-by-197px-per-frame.png" id="2_bojgf"]
 [ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="3_x3bnn"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://bbfwbrjwui2dd"]
 
-[ext_resource type="Script" path="res://magic_bolt.gd" id="1_258mv"]
+[ext_resource type="Script" uid="uid://7rt4v3xyaxuf" path="res://magic_bolt.gd" id="1_258mv"]
 [ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="2_d3qxa"]
 [ext_resource type="Texture2D" uid="uid://ljot0mi4two" path="res://Assets/Icons/magic_shoot_skill.png" id="2_xsud4"]
 

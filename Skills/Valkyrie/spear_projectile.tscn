@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://b1totgydaewyj"]
 
-[ext_resource type="Script" path="res://Skills/Valkyrie/spear_projectile.gd" id="1_c7ovp"]
+[ext_resource type="Script" uid="uid://b5by0fy0nctif" path="res://Skills/Valkyrie/spear_projectile.gd" id="1_c7ovp"]
 [ext_resource type="Texture2D" uid="uid://ggapmk83uokr" path="res://Assets/VFX/skillsFX/spear_thorw.png" id="2_327u0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fk57c"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dwusg6yb1iy13"]
 
 [ext_resource type="Texture2D" uid="uid://cfac68y83c0id" path="res://Assets/knight.png" id="1_7bwui"]
-[ext_resource type="Script" path="res://vendor.gd" id="2_jq22k"]
+[ext_resource type="Script" uid="uid://b7xgy0e7hgcsw" path="res://vendor.gd" id="2_jq22k"]
 [ext_resource type="PackedScene" uid="uid://dop2febsr8sp7" path="res://interaction.tscn" id="3_yfg02"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vmgds"]

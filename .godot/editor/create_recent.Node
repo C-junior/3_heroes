@@ -1,6 +1,9 @@
-Button
 AnimationPlayer
+GPUParticles2D
 AnimatedSprite2D
+WorldEnvironment
+Sprite2D
+Button
 CollisionShape2D
 Area2D
 RichTextLabel

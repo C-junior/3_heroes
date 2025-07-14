@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=3 uid="uid://bwmvbw04lnljg"]
 
-[ext_resource type="Script" path="res://Skills/Wizard/ice_nova_tscn.gd" id="1_fq7kx"]
+[ext_resource type="Script" uid="uid://lisdekk5jh83" path="res://Skills/Wizard/ice_nova_tscn.gd" id="1_fq7kx"]
 [ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="1_lv0ej"]
 [ext_resource type="Texture2D" uid="uid://ilksyu7f4g8c" path="res://Assets/VFX/skillsFX/ice_nova.png" id="1_y3cll"]
 [ext_resource type="Texture2D" uid="uid://i86xk6bu6grf" path="res://Assets/VFX/skillsFX/ice_particle.png" id="2_wvy3t"]
@@ -178,9 +178,9 @@ scale = Vector2(0.171875, 0.0957031)
 texture = ExtResource("1_lv0ej")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-process_material = SubResource("ParticleProcessMaterial_ljger")
 texture = ExtResource("2_wvy3t")
 lifetime = 0.15
+process_material = SubResource("ParticleProcessMaterial_ljger")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_bd6fh")

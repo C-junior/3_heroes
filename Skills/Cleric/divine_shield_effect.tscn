@@ -1,0 +1,98 @@
+[gd_scene load_steps=13 format=3 uid="uid://dutce6r5rdnba"]
+
+[ext_resource type="Script" uid="uid://dm7annqtl2l57" path="res://Skills/Cleric/divine_shield_effect.gd" id="1_tfrur"]
+[ext_resource type="Texture2D" uid="uid://cv48v44i5o51r" path="res://Assets/VFX/skillsFX/divine_shield.png" id="1_wl2vw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmunn"]
+atlas = ExtResource("1_wl2vw")
+region = Rect2(66, 66, 66, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg1hg"]
+atlas = ExtResource("1_wl2vw")
+region = Rect2(132, 66, 66, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnxdm"]
+atlas = ExtResource("1_wl2vw")
+region = Rect2(0, 66, 66, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6kwh"]
+atlas = ExtResource("1_wl2vw")
+region = Rect2(66, 0, 66, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c56nw"]
+atlas = ExtResource("1_wl2vw")
+region = Rect2(132, 0, 66, 66)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wif4a"]
+atlas = ExtResource("1_wl2vw")
+region = Rect2(0, 0, 66, 66)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_txopx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmunn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yg1hg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnxdm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o6kwh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c56nw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wif4a")
+}],
+"loop": true,
+"name": &"activate",
+"speed": 8.0
+}]
+
+[sub_resource type="Animation" id="Animation_un34t"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_vsua5"]
+resource_name = "activate"
+length = 3.0
+step = 0.1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2.96667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ntkbm"]
+_data = {
+&"RESET": SubResource("Animation_un34t"),
+&"activate": SubResource("Animation_vsua5")
+}
+
+[node name="DivineShieldEffect" type="Node2D"]
+script = ExtResource("1_tfrur")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(2.162, 1.651, 1, 1)
+position = Vector2(0.500001, -0.499996)
+scale = Vector2(1.28788, 1.28788)
+sprite_frames = SubResource("SpriteFrames_txopx")
+animation = &"activate"
+autoplay = "activate"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ntkbm")
+}

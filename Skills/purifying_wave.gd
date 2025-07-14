@@ -1,8 +1,9 @@
+# purifying_wave.gd
 extends Skill
 
 @export var heal_percentage: float = 0.15  # Heals 15% of max health
-#@export var cooldown_time: float = 5.0  # Cooldown duration
 @export var cleanse_effects: Array = ["poison", "slow"]  # Effects that can be removed
+@export var purifying_wave_effect_scene: PackedScene = preload("res://Skills/Cleric/purifying_wave_effect.tscn")  # Visual effect
 
 var cooldown_timer: Timer = null
 
@@ -25,17 +26,25 @@ func apply_effect(character: BaseCharacter) -> void:
 # Healing and cleansing for all allies
 func _trigger_purifying_wave(character: BaseCharacter) -> void:
 	var allies = character.get_tree().get_nodes_in_group("PlayerCharacters")
-	print("Purifying Wave applied to", allies)
+	print("Purifying Wave activated for", allies)
+
+	# Add visual effect to the cleric
+	var wave_effect = purifying_wave_effect_scene.instantiate() as Node2D
+	wave_effect.position = character.global_position
+	character.get_parent().add_child(wave_effect)
+
+	# Heal and cleanse allies
 	for ally in allies:
 		# Heal the ally by a percentage of their max health
 		var heal_amount = ally.max_health * heal_percentage
 		ally.receive_heal(heal_amount)
-		print("Purifying Wave applied to", ally.name, " and ", heal_amount)
-		# Cleanse debuffs
+		print("Purifying Wave healed", ally.name, "for", heal_amount)
+
+		# Remove debuffs from the ally
 		for effect in cleanse_effects:
 			if ally.has_method("remove_status_effect"):
 				ally.remove_status_effect(effect)
-		print("Purifying Wave applied to", ally.name)
+				print("Purifying Wave cleansed", effect, "from", ally.name)
 
 # Cooldown is ready
 func _on_cooldown_ready() -> void:

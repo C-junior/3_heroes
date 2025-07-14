@@ -15,15 +15,16 @@ func _ready():
 	
 	# Cleric Skills
 	skills[Constants.CharacterType.HEALER] = {
-		3: [_create_holy_hands(), _create_healing_light(), _create_radiant_aura()],
-		6: [_create_mass_heal(), _create_divine_shield(), _create_purifying_wave()],
+		3: [_create_purifying_wave(), _create_healing_light(), _create_divine_shield()],
+		6: [_create_holy_hands(), _create_radiant_aura(), _create_mass_heal()],
 		9: [_create_defense_mastery(), _create_healing_mastery(), _create_crescendo()]
 	}
 	
 	# Valkyrie Skills
 	skills[Constants.CharacterType.VALKYRIE] = {
 		3: [_create_spear_throw(), _create_valhallas_call(), _create_thunder_strike()],
-		6: [_create_fenrirs_wrath(), _create_ragnarok(), _create_valkyries_zeal()]
+		6: [_create_fenrirs_wrath(), _create_ragnarok(), _create_valkyries_zeal()],
+		9: [_create_crescendo(), _create_weapon_mastery(), _create_defense_mastery()]
 	}
 	
 	# Wizard Skills
@@ -171,7 +172,7 @@ func _create_valhallas_call() -> Skill:
 	var valhallas_call = load("res://Skills/Valkyrie/valhallas_call.gd").new()
 	valhallas_call.name = "Valhalla's Call"
 	valhallas_call.description = "When HP is below 20%, reduce cooldown, increase speed, and grant lifesteal."
-	valhallas_call.cooldown = 30
+	valhallas_call.cooldown = 10
 	valhallas_call.icon = load("res://Assets/Icons/valhallas_call_icon.png")
 	return valhallas_call
 

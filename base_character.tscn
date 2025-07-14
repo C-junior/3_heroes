@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://dnaol20pgmvt8"]
 
-[ext_resource type="Script" path="res://base_character.gd" id="1_tcw2m"]
-[ext_resource type="Script" path="res://popup_location.gd" id="2_ipw5o"]
+[ext_resource type="Script" uid="uid://q47y5uejpvym" path="res://base_character.gd" id="1_tcw2m"]
+[ext_resource type="Script" uid="uid://dcb28rpb5u0t1" path="res://popup_location.gd" id="2_ipw5o"]
 [ext_resource type="PackedScene" uid="uid://cqpqjc8jnyd4k" path="res://floating_numbers.tscn" id="3_ym6vb"]
 [ext_resource type="Texture2D" uid="uid://lqonvk8d3x1d" path="res://Assets/hpbar.png" id="4_5ntxk"]
-[ext_resource type="Script" path="res://level_system.gd" id="5_t442t"]
-[ext_resource type="Script" path="res://skill_name_location.gd" id="6_piguk"]
+[ext_resource type="Script" uid="uid://bl0ju5dcsfi0b" path="res://level_system.gd" id="5_t442t"]
+[ext_resource type="Script" uid="uid://bttr7em7mkjqb" path="res://skill_name_location.gd" id="6_piguk"]
 [ext_resource type="PackedScene" uid="uid://qg1mucamym17" path="res://skill_name_popup.tscn" id="7_qaodm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_t6ned"]

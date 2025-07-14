@@ -10,9 +10,9 @@ config_version=5
 
 [application]
 
-config/name="Heroes-Stand"
+config/name="3 Heroes Stand"
 run/main_scene="res://main_game.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://Assets/icon.svg"
 
 [autoload]
@@ -58,3 +58,4 @@ jump={
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+viewport/hdr_2d=true

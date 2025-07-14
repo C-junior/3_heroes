@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b1tts0yfudpdg"]
 
-[ext_resource type="Script" path="res://statsdisplay.gd" id="1_ifg4n"]
+[ext_resource type="Script" uid="uid://c1ymrj3b271bs" path="res://statsdisplay.gd" id="1_ifg4n"]
 
 [node name="StatsDisplay" type="PanelContainer"]
 offset_right = 174.0

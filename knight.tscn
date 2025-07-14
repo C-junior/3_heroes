@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://djgsammf8qp81"]
 
-[ext_resource type="Script" path="res://knight.gd" id="1_146xs"]
+[ext_resource type="Script" uid="uid://broqei133o5sc" path="res://knight.gd" id="1_146xs"]
 [ext_resource type="PackedScene" uid="uid://dnaol20pgmvt8" path="res://base_character.tscn" id="1_ytoxj"]
 [ext_resource type="Texture2D" uid="uid://q51popnfqrrp" path="res://Assets/knight-atk.png" id="3_itbhp"]
 [ext_resource type="Texture2D" uid="uid://cs8xg53juo64o" path="res://Assets/knight_girl.png" id="3_jjbti"]
