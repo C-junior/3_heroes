@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://kuka26t1av42"]
+[gd_scene load_steps=9 format=3 uid="uid://kuka26t1av42"]
 
-[ext_resource type="Script" uid="uid://dl0eksgqnhjun" path="res://main_game.gd" id="1_1xiyh"]
+[ext_resource type="Script" path="res://game_state_manager.gd" id="1_qcyf5"]
+[ext_resource type="Script" uid="uid://dl0eksgqnhjun" path="res://main_game.gd" id="2_1xiyh"]
 [ext_resource type="Texture2D" uid="uid://dlplcfdehgpxh" path="res://Assets/arena_bg.jpg" id="1_5dba5"]
 [ext_resource type="PackedScene" uid="uid://chgkv5dsnjvcr" path="res://cleric.tscn" id="3_jng1e"]
 [ext_resource type="PackedScene" uid="uid://dtw80xikug5sq" path="res://valkyrie.tscn" id="5_4l462"]
@@ -11,7 +12,10 @@
 font_size = 24
 
 [node name="MainGame" type="Node2D"]
-script = ExtResource("1_1xiyh")
+script = ExtResource("2_1xiyh")
+
+[node name="GameStateManager" type="Node" parent="."]
+script = ExtResource("1_qcyf5")
 
 [node name="ArenaBg" type="Sprite2D" parent="."]
 position = Vector2(420, 239)
@@ -37,12 +41,7 @@ position = Vector2(189, 409)
 position = Vector2(6, 11)
 frame_progress = 0.617217
 
-[node name="WaveLabel" type="Label" parent="."]
-offset_left = 375.0
-offset_top = 4.0
-offset_right = 415.0
-offset_bottom = 27.0
-label_settings = SubResource("LabelSettings_n6nty")
+[node name="UIManager" type="CanvasLayer" parent="."]
 
 [node name="Button" type="Button" parent="."]
 offset_right = 8.0
@@ -50,3 +49,6 @@ offset_bottom = 8.0
 text = "Speed Up"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="wave_started" from="." to="UIManager" method="update_wave_label"]
+[connection signal="open_shop_requested" from="." to="UIManager" method="open_shop"]
+[connection signal="shop_closed" from="UIManager" to="." method="_on_close_shop"]

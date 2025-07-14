@@ -1,0 +1,71 @@
+{
+    "waves": [
+        {
+            "wave": 1,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin.tscn", "count": 3 }
+            ]
+        },
+        {
+            "wave": 2,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin.tscn", "count": 5 },
+                { "scene_path": "res://Enemies/goblin_brute.tscn", "count": 1 }
+            ]
+        },
+        {
+            "wave": 3,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin.tscn", "count": 4 },
+                { "scene_path": "res://Enemies/goblin_shaman.tscn", "count": 2 }
+            ]
+        },
+        {
+            "wave": 4,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin_brute.tscn", "count": 2 },
+                { "scene_path": "res://Enemies/goblin_shaman.tscn", "count": 2 }
+            ]
+        },
+        {
+            "wave": 5,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin_berserker.tscn", "count": 3 },
+                { "scene_path": "res://Enemies/goblin.tscn", "count": 4 }
+            ]
+        },
+        {
+            "wave": 6,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin_shaman.tscn", "count": 3 },
+                { "scene_path": "res://Enemies/goblin_brute.tscn", "count": 3 }
+            ]
+        },
+        {
+            "wave": 7,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin_assassin.tscn", "count": 3 },
+                { "scene_path": "res://Enemies/goblin.tscn", "count": 2 }
+            ]
+        },
+        {
+            "wave": 8,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin_shaman.tscn", "count": 2 },
+                { "scene_path": "res://Enemies/goblin_assassin.tscn", "count": 3 }
+            ]
+        },
+        {
+            "wave": 9,
+            "enemies": [
+                { "scene_path": "res://Enemies/goblin_berserker.tscn", "count": 4 }
+            ]
+        },
+        {
+            "wave": 10,
+            "enemies": [
+                { "scene_path": "res://Enemies/king_goblin.tscn", "count": 1 }
+            ]
+        }
+    ]
+}
