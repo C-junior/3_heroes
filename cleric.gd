@@ -28,7 +28,14 @@ func _process(delta: float):
 	# Find nearest injured ally to heal
 	var injured_ally = find_injured_ally()
 	if injured_ally:
-		move_and_heal(injured_ally, delta)
+		if global_position.distance_to(injured_ally.global_position) > attack_range:
+			var direction = (injured_ally.global_position - global_position).normalized()
+			velocity = direction * move_speed
+			move_and_slide()
+		else:
+			velocity = Vector2.ZERO
+			if heal_timer.is_stopped():
+				heal(injured_ally)
 	use_skills()
 
 func find_injured_ally() -> Node2D:
@@ -43,15 +50,6 @@ func find_injured_ally() -> Node2D:
 
 	return injured_ally
 
-func move_and_heal(target: Node2D, delta: float):
-	var direction = (target.global_position - global_position).normalized()
-	if global_position.distance_to(target.global_position) > attack_range:
-		velocity = direction * move_speed
-		move_and_slide()
-	else:
-		velocity = Vector2.ZERO
-		if heal_timer.is_stopped():
-			heal(target)
 
 func heal(target: Node2D):
 	if target.has_method("receive_heal"):
