@@ -40,12 +40,8 @@ var is_stunned: bool = false  # Track stun state
 @export var base_max_health: int = 100
 @export var base_defense: int = 5
 
-# Equipment dictionary
-var equipped_items: Dictionary = {"weapon": null, "armor": null, "accessory": null}
-
 # Character skill management
 var active_skills = []  # Stores the active skills with cooldowns
-#var skill_cooldowns = {}  # Tracks cooldowns of active skills
 var learned_skills: Array = []
 
 var current_health: int
@@ -74,29 +70,6 @@ func _ready():
 	stun_timer.connect("timeout", Callable(self, "_on_stun_end"))
 	add_child(stun_timer)
 
-# Determines if an item can be equipped
-func can_equip(item: Item) -> bool:
-	return item.type in equipped_items and character_type in item.allowed_types
-
-# Equip an item and update stats
-func equip_item(item: Item):
-	if can_equip(item):
-		equipped_items[item.type] = item
-		#print("Equipped: ", item.name, " to slot: ", item.type)
-	else:
-		print("Cannot equip: ", item.name, " due to character type restrictions.")
-	update_stats()
-
-# Unequip an item
-func unequip_item(item: Item):
-	for slot in equipped_items:
-		if equipped_items[slot] == item:
-			equipped_items[slot] = null
-			print("Unequipped: ", item.name, " from slot: ", slot)
-			update_stats()
-			return
-	print("Invalid item: ", item)
-
 # Update stats based on equipped items
 func update_stats():
 	attack_damage = base_attack_damage + (damage_growth * level_system.level)
@@ -104,17 +77,7 @@ func update_stats():
 	move_speed = base_move_speed
 	max_health = base_max_health + (health_growth * level_system.level)
 
-	for slot in equipped_items:
-		var item = equipped_items[slot]
-		if item != null:
-			attack_damage += item.attack_bonus
-			defense += item.defense_bonus
-			move_speed += item.speed_bonus
-			if slot == "armor":
-				max_health += item.health_bonus
 	for skill in learned_skills:
-		#print("Checking skill: ", skill.name, "learn skills ", learned_skills)
-		
 		if skill != null:
 			if skill.name == "Weapon Mastery":
 				attack_damage += skill.attack_bonus
@@ -148,21 +111,15 @@ func apply_lifesteal(damage_dealt: int) -> void:
 		print("Lifesteal: healed", heal_amount, "HP from lifesteal.")
 		popuploc.popup(heal_amount)
 		update_health_label()
-# Handle taking damage
-# Activate the shield with a set number of blocks
-func activate_shield(blocks: int):
-	shield_block_count = blocks
-	print("Shield activated with", blocks, "blocks.")
 
-# Override the take_damage method to reduce block count if shield is active
+# Handle taking damage
 func take_damage(damage: int):
 	if shield_active and arcane_shield_skill != null:
-		# Call the absorb_damage function in the arcane shield skill
-		damage = arcane_shield_skill.absorb_damage(damage, self)  # Only reduce damage if shield was applied
+		damage = arcane_shield_skill.absorb_damage(damage, self)
 	if is_invincible:
 		self.sprite.modulate = Color(1,1,0)
 		print(name, "is invincible and took no damage!")
-		return  # Ignore damage if invincible
+		return
 	if shield_block_count > 0:
 		shield_block_count -= 1
 		print("Blocked attack! Remaining blocks:", shield_block_count)
@@ -171,24 +128,12 @@ func take_damage(damage: int):
 	else:
 		var reduced_damage = max(damage - defense, 0)
 		current_health -= reduced_damage
-		popuploc.popup(-reduced_damage)  # Display damage popup
+		popuploc.popup(-reduced_damage)
 		update_health_label()
 		health_progress_bar.value = current_health
 		if current_health <= 0:
 			die()
 
-func move_and_attack(target: Node2D, delta: float):
-	if is_stunned:
-		velocity = Vector2.ZERO
-		return  # Skip movement and attack while stunned
-	var direction = (target.global_position - global_position).normalized()
-	if global_position.distance_to(target.global_position) > attack_range:
-		velocity = direction * move_speed
-		move_and_slide()
-	else:
-		velocity = Vector2.ZERO
-		if attack_timer.is_stopped():
-			attack(target)
 # Character dies
 func die():
 	queue_free()
@@ -209,7 +154,7 @@ func find_nearest_target(group_name: String) -> Node2D:
 			nearest_node = node
 
 	return nearest_node
-	
+
 func get_health() -> int:
 	return current_health
 
@@ -219,21 +164,19 @@ func get_max_health() -> int:
 # Receive healing
 func receive_heal(heal: int):
 	current_health += heal
-	popuploc.popup(heal)  # Healing popup
+	popuploc.popup(heal)
 	current_health = clamp(current_health, 0, max_health)
 	update_health_label()
 	health_progress_bar.value = current_health
 
 # Handle level-up and stat growth
 func _on_leveled_up():
-	max_health += health_growth 
+	max_health += health_growth
 	attack_damage += damage_growth
 	defense += defense_growth
 	current_health = max_health
 	update_stats()
 	update_level_ui()
-
-
 
 # Update the level label UI
 func update_level_ui():
@@ -243,78 +186,77 @@ func update_level_ui():
 func add_xp_to_party(amount: int):
 	for player in get_tree().get_nodes_in_group("PlayerCharacters"):
 		player.level_system.add_xp(amount)
-		
 		_on_leveled_up()
 
 # Add global gold when enemy dies
 func add_gold(gold: int):
-	global.add_currency(gold)  # Update global currency
-	
+	global.add_currency(gold)
 
 # Method to learn a new skill
 func learn_skill(skill: Skill):
 	print("Learning skill: ", skill.name)
 	if skill.is_passive:
-		# Apply the passive effect immediately
 		skill.apply_passive_effect(self)
 	else:
-		# Add active skills to the active skills list
 		active_skills.append(skill)
-
 	print("Skill learned: ", skill.name)
-# Process movement and attack if not stunned
 
 # Stun the character for a duration
 func stun(duration: float) -> void:
 	if is_stunned:
-		return  # Ignore if already stunned
+		return
 	is_stunned = true
 	print("Character stunned for", duration, "seconds.")
-	velocity = Vector2.ZERO  # Stop movement
-	stun_timer.start()  # Start the stun timer
+	velocity = Vector2.ZERO
+	stun_timer.start()
 	stun_timer.wait_time = duration
 
 func stunned():
 	if is_stunned == true:
 		target.sprite.modulate = Color(1,0,0)
 		print("stuned ", target)
+
 # Called when stun duration ends
 func _on_stun_end() -> void:
 	is_stunned = false
 	print("Stun ended.")
-
 	target.sprite.modulate = Color(1,1,1)
-	
-# invincible
 
-var is_invincible: bool = false  # Track if the character is invincible
+var is_invincible: bool = false
 var invincibility_timer: Timer = null
 
-# Function to toggle invincibility for a specific duration
 func set_invincible(duration: float) -> void:
-	is_invincible = true	
+	is_invincible = true
 	print(name, "is now invincible for", duration, "seconds.")
-	
-	# Start the invincibility timer if not already set
 	if not invincibility_timer:
 		invincibility_timer = Timer.new()
 		invincibility_timer.one_shot = true
 		add_child(invincibility_timer)
-	
 	invincibility_timer.wait_time = duration
 	invincibility_timer.start()
 	invincibility_timer.connect("timeout", Callable(self, "_end_invincibility"))
 
-# End invincibility after the timer expires
 func _end_invincibility() -> void:
 	is_invincible = false
 	self.sprite.modulate = Color(1,1,1)
 	print(name, "is no longer invincible.")
-	
-# Check if the character is dead
 
+func find_target_and_attack():
+	if is_stunned:
+		return
 
-#func _process(delta: float):
-	#if not is_stunned:
-		#move_and_attack(target, delta)  # Movement logic
-		#
+	target = find_nearest_target("Enemies")
+	if target:
+		var direction = (target.global_position - global_position).normalized()
+		if global_position.distance_to(target.global_position) > attack_range:
+			velocity = direction * move_speed
+			move_and_slide()
+		else:
+			velocity = Vector2.ZERO
+			if attack_timer.is_stopped():
+				attack(target)
+	else:
+		velocity = Vector2.ZERO
+
+func _process(delta: float):
+	find_target_and_attack()

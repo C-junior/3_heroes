@@ -9,20 +9,8 @@ extends BaseCharacter
 @onready var sprite: AnimatedSprite2D = $WizardSprite
 
 @export var wizard_attack_cooldown: float = 2.0
-@onready var items = ItemDB
-
 # Skill-related variables
 var cooldown_timers: Dictionary = {}
-
-@onready var wizard_health_progress_bar = $HealthProgressBAr
-
-@onready var itemDataBase = ItemDB
-
-@export var current_item: Item:
-	set(value):
-		current_item = value
-		if current_item != null:
-			wizard_attack_damage += current_item.attack_bonus
 
 func _ready():
 	base_max_health = wizard_max_health
@@ -32,7 +20,6 @@ func _ready():
 
 	base_move_speed = wizard_move_speed
 	current_health = base_max_health
-	current_item = null  # Start without any item equipped
 
 	character_type = constants.CharacterType.MAGE  # Wizards are Mages
 
@@ -98,7 +85,5 @@ func _process(delta: float):
 	#mana_progress_bar.value = wizard_mana
 
 	# Find nearest enemy to attack
-	target = find_nearest_target("Enemies")
-	if target:
-		move_and_attack(target, delta)
+	find_target_and_attack()
 	use_skills()

@@ -33,20 +33,9 @@ position = Vector2(189, 409)
 
 [node name="WaveManager" type="Timer" parent="."]
 
-[node name="Vendor" parent="." instance=ExtResource("11_w0ngy")]
-position = Vector2(6, 11)
-frame_progress = 0.617217
-
 [node name="WaveLabel" type="Label" parent="."]
 offset_left = 375.0
 offset_top = 4.0
 offset_right = 415.0
 offset_bottom = 27.0
 label_settings = SubResource("LabelSettings_n6nty")
-
-[node name="Button" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
-text = "Speed Up"
-
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

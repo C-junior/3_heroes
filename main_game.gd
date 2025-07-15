@@ -5,26 +5,22 @@ extends Node2D
 @onready var player_characters = $PlayerCharacters
 @onready var enemies = $Enemies
 @onready var wave_label = $WaveLabel
-@onready var vendor = $Vendor
-@onready var shop_ui = $Shop
 @onready var wave_manager_timer: Timer = $WaveManager  # Timer managing wave intervals
-
-@onready var ui = UI
 
 var current_wave = 1
 var max_waves = 10
 var wave_in_progress = false
-var skill_popup_triggered = false
-
-signal wave_skill_popup
 
 func _ready():
+	# Place characters in a fixed position
+	var characters = player_characters.get_children()
+	for i in range(characters.size()):
+		characters[i].position = Vector2(100, 100 + i * 100)
 
 	#wave manager
 	add_child(wave_manager)  # Add wave_manager to the scene tree
-	wave_manager_timer.connect("timeout",Callable( self, "_on_wave_timer_timeout"))  # Connect timer to wave start
+	wave_manager_timer.connect("timeout", Callable(self, "_on_wave_timer_timeout"))  # Connect timer to wave start
 	wave_manager_timer.start(1.0)  # Start timer with delay for the initial wave
-	
 
 func _on_wave_timer_timeout():
 	if wave_in_progress:
@@ -37,13 +33,7 @@ func start_wave():
 	wave_in_progress = true
 	wave_label.text = "Wave " + str(current_wave)
 
-	skill_popup_triggered = false
 	spawn_wave_enemies(current_wave)
-
-	# Show skill popup every few waves
-	if current_wave % 3 == 0 and !skill_popup_triggered:
-		emit_signal("wave_skill_popup")
-		skill_popup_triggered = true
 
 func spawn_wave_enemies(wave: int):
 	var wave_setup = wave_manager.get_wave_enemies(wave)
@@ -65,25 +55,10 @@ func check_wave_completion():
 			print("All waves completed!")
 			wave_manager_timer.stop()
 		else:
-			open_shop()
-
-func open_shop():
-	get_tree().paused = true
-	vendor.interact()
-	print("Opening shop after wave ", current_wave)
-
-func close_shop():
-	print("Closing shop and resuming game")
-	vendor.interact()
-	get_tree().paused = false
-	current_wave += 1
-	wave_manager_timer.start(2.0)  # Start the timer to trigger the next wave after a short delay
+			current_wave += 1
+			wave_manager_timer.start(2.0)  # Start the timer to trigger the next wave after a short delay
 
 func _process(delta: float):
 	# Check if the wave is completed in each frame
 	check_wave_completion()
-
-
-func _on_button_pressed() -> void:
-	Engine.time_scale = 2
 	

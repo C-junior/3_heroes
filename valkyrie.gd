@@ -12,13 +12,6 @@ extends BaseCharacter
 # Skill-related variables
 var cooldown_timers: Dictionary = {}
 
-@export var current_item: Item:
-	set(value):
-		current_item = value
-		print("current item valk? ", current_item)
-		if current_item != null:
-			valkyrie_attack_damage += current_item.attack_bonus 
-
 # Initialize the Valkyrie
 func _ready():
 	base_max_health = valkyrie_max_health
@@ -26,7 +19,6 @@ func _ready():
 	base_defense = valkyrie_defense
 	base_move_speed = valkyrie_move_speed
 	current_health = base_max_health
-	current_item = null  # Start without any item equipped
 	character_type = constants.CharacterType.VALKYRIE
 	health_progress_bar.max_value = base_max_health  # Set max value for the progress bar
 	health_progress_bar.value = current_health  # Initialize progress bar value
@@ -77,8 +69,6 @@ func use_skills():
 
 func _process(delta: float):
 	# Find nearest enemy to attack
-	target = find_nearest_target("Enemies")
-	if target:
-		move_and_attack(target, delta)
+	find_target_and_attack()
 	
 	use_skills()

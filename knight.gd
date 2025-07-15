@@ -8,24 +8,9 @@ extends BaseCharacter
 @export var knight_move_speed: int = 60
 @export var knight_max_health: int = 300
 @export var knight_attack_cooldown: float = 1.0
-@onready var items = ItemDB
-
 # Skill-related variables
-#var learned_skills: Array = []
 var cooldown_timers: Dictionary = {}
 var charge_skill: Skill = null  # Store the charge skill reference
-
-
-@onready var knight_health_progress_bar = $HealthProgressBAr
-
-@onready var itemDataBase = ItemDB
-
-@export var current_item: Item:
-	set(value):
-		current_item = value
-		print("current item knigr? ", current_item)
-		if current_item != null:
-			knight_attack_damage += current_item.attack_bonus 
 
 func _ready():
 	base_max_health = knight_max_health
@@ -34,7 +19,6 @@ func _ready():
 
 	base_move_speed = knight_move_speed
 	current_health = base_max_health
-	current_item = null  # Start without any item equipped
 	
 	character_type = constants.CharacterType.FIGHTER  # Knights are Fighters
  
@@ -99,8 +83,6 @@ func _process(delta: float):
 	update_charge_movement(delta)
 
 	# Find nearest enemy to attack
-	target = find_nearest_target("Enemies")
-	if target:
-		move_and_attack(target, delta)
+	find_target_and_attack()
 
 	use_skills()
