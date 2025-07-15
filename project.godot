@@ -11,15 +11,12 @@ config_version=5
 [application]
 
 config/name="3 Heroes Stand"
-run/main_scene="res://main_game.tscn"
+run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://Assets/icon.svg"
 
 [autoload]
 
-ItemDB="*res://Assets/Items/ItemDatabase.gd"
-UI="*res://ui.tscn"
-itemmanager="*res://item_manager.gd"
 constants="*res://Constants.gd"
 global="*res://global.gd"
 SkillDB="*res://SkillDatabase.gd"
