@@ -1,10 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://ck34trga36w3"]
+[gd_scene load_steps=6 format=3 uid="uid://ck34trga36w3"]
 
 [ext_resource type="Script" uid="uid://qfajfpklso6k" path="res://ui.gd" id="1_bhicx"]
 [ext_resource type="Script" uid="uid://8mbv4s1be2bk" path="res://manager.gd" id="2_qn4ti"]
-[ext_resource type="Script" uid="uid://bwi5ucngjd07m" path="res://inventory.gd" id="3_362i1"]
 [ext_resource type="PackedScene" uid="uid://dryra2oqvkefx" path="res://slot.tscn" id="4_uyso4"]
-[ext_resource type="Script" uid="uid://by4xhbiiq3jiu" path="res://shop.gd" id="5_mdeu6"]
 [ext_resource type="PackedScene" uid="uid://b1tts0yfudpdg" path="res://statsdisplay.tscn" id="6_85g5e"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lup7p"]
@@ -28,7 +26,6 @@ offset_top = 11.0
 offset_right = 815.0
 offset_bottom = 411.0
 columns = 3
-script = ExtResource("3_362i1")
 
 [node name="Slot" parent="Manager/Inventory" instance=ExtResource("4_uyso4")]
 layout_mode = 2
@@ -72,7 +69,6 @@ offset_top = 282.0
 offset_right = 666.0
 offset_bottom = 486.0
 columns = 5
-script = ExtResource("5_mdeu6")
 
 [node name="Slot" parent="Manager/Shop" instance=ExtResource("4_uyso4")]
 layout_mode = 2

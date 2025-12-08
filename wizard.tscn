@@ -62,7 +62,6 @@ wizard_move_speed = 50
 wizard_max_health = 200
 wizard_attack_range = 300.0
 wizard_attack_cooldown = 2.0
-current_item = null
 
 [node name="WizardSprite" type="AnimatedSprite2D" parent="." index="0"]
 position = Vector2(2, 8)

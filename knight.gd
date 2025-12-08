@@ -38,7 +38,7 @@ func _ready():
 
 # Learn a new skill and initialize its timers
 func learn_skill(skill: Skill):
-	learned_skills.append(skill)
+	super.learn_skill(skill)
 	_setup_skill_cooldown(skill)
 	print("Knight learned skill: ", skill.name)
 	skill.init(self)  # Call init to initialize the skill properly (ensure cooldown_timer is initialized)

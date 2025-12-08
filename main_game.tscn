@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://kuka26t1av42"]
+[gd_scene load_steps=7 format=3 uid="uid://kuka26t1av42"]
 
 [ext_resource type="Script" uid="uid://dl0eksgqnhjun" path="res://main_game.gd" id="1_1xiyh"]
 [ext_resource type="Texture2D" uid="uid://dlplcfdehgpxh" path="res://Assets/arena_bg.jpg" id="1_5dba5"]
 [ext_resource type="PackedScene" uid="uid://chgkv5dsnjvcr" path="res://cleric.tscn" id="3_jng1e"]
 [ext_resource type="PackedScene" uid="uid://dtw80xikug5sq" path="res://valkyrie.tscn" id="5_4l462"]
 [ext_resource type="PackedScene" uid="uid://brt66rrbwnw6e" path="res://wizard.tscn" id="6_y5edn"]
-[ext_resource type="PackedScene" uid="uid://dwusg6yb1iy13" path="res://vendor.tscn" id="11_w0ngy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_n6nty"]
 font_size = 24

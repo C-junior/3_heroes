@@ -62,7 +62,7 @@ func _on_heal_timeout():
 
 # Learn a new skill and initialize it for the Cleric
 func learn_skill(skill: Skill):
-	learned_skills.append(skill)
+	super.learn_skill(skill) # Call base to handle generic logic
 	skill.init(self)  # Initialize skill for the Cleric instance
 	_setup_skill_cooldown(skill)  # Set up cooldown for the skill
 	print("Cleric learned skill: ", skill.name)

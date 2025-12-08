@@ -124,7 +124,6 @@ valkyrie_defense = 8
 valkyrie_move_speed = 85
 valkyrie_max_health = 350
 valkyrie_attack_cooldown = 1.2
-current_item = null
 
 [node name="ValkyrieSprite" type="AnimatedSprite2D" parent="." index="0"]
 scale = Vector2(0.1, 0.1)

@@ -37,7 +37,7 @@ func _ready():
 
 # Learn a new skill and initialize its timers
 func learn_skill(skill: Skill):
-	learned_skills.append(skill)
+	super.learn_skill(skill)
 	_setup_skill_cooldown(skill)
 	skill.init(self)
 	print("Learned skill:", skill.name)

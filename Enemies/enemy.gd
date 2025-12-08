@@ -28,6 +28,22 @@ func _ready():
 	add_child(taunt_timer)
 	taunt_timer.connect("timeout", Callable(self, "_on_taunt_end"))
 
+# Move towards and attack the target
+func move_and_attack(target_node: Node2D, delta: float) -> void:
+	if is_stunned:
+		return
+	
+	var direction = (target_node.global_position - global_position).normalized()
+	
+	if global_position.distance_to(target_node.global_position) > attack_range:
+		velocity = direction * move_speed
+		move_and_slide()
+	else:
+		velocity = Vector2.ZERO
+		if attack_timer.is_stopped():
+			attack(target_node)
+
+
 func _process(delta: float):
 
 	target = find_nearest_target("PlayerCharacters")
@@ -84,7 +100,12 @@ func restore_speed():
 # Override the die function to reward XP and random gold
 func die():
 	# Grant XP and random gold to all player characters
-	var party_manager = get_tree().root.get_node("MainGame/PlayerCharacters")
+	var party_manager = get_tree().root.get_node_or_null("MainGame/PlayerCharacters")
+	
+	if party_manager == null:
+		print("Warning: Could not find PlayerCharacters node")
+		queue_free()
+		return
 	
 	# Calculate random gold reward
 	var random_gold_reward = randi() % (max_gold_reward - min_gold_reward + 1) + min_gold_reward

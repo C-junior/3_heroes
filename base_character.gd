@@ -78,16 +78,17 @@ func update_stats():
 	max_health = base_max_health + (health_growth * level_system.level)
 
 	for skill in learned_skills:
-		if skill != null:
-			if skill.name == "Weapon Mastery":
-				attack_damage += skill.attack_bonus
-				print("Applied weapon mastery bonus: ", skill.attack_bonus)
-			elif skill.name == "Defense Mastery":
-				defense += skill.defense_bonus
-				print("Applied defense mastery bonus: ", skill.defense_bonus)
-			elif skill.name == "Crescendo":
-				max_health += skill.health_bonus
-				print("Applied defense mastery bonus: ", skill.health_bonus)
+		if skill != null and skill.is_passive:
+			attack_damage += skill.attack_bonus
+			defense += skill.defense_bonus
+			max_health += skill.health_bonus
+			
+			if skill.attack_bonus > 0:
+				print("Applied attack bonus from ", skill.name, ": ", skill.attack_bonus)
+			if skill.defense_bonus > 0:
+				print("Applied defense bonus from ", skill.name, ": ", skill.defense_bonus)
+			if skill.health_bonus > 0:
+				print("Applied health bonus from ", skill.name, ": ", skill.health_bonus)
 
 	current_health = min(current_health, max_health)
 	update_health_label()
@@ -195,8 +196,13 @@ func add_gold(gold: int):
 # Method to learn a new skill
 func learn_skill(skill: Skill):
 	print("Learning skill: ", skill.name)
+	# Always add to learned skills so we can track bonuses
+	learned_skills.append(skill)
+	
 	if skill.is_passive:
 		skill.apply_passive_effect(self)
+		# Trigger a stat update immediately for passives
+		update_stats()
 	else:
 		active_skills.append(skill)
 	print("Skill learned: ", skill.name)

@@ -32,9 +32,6 @@ window/stretch/mode="viewport"
 PlayerCharacters=""
 Enemies=""
 
-[input]
-
-
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
