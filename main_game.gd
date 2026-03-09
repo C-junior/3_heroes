@@ -67,7 +67,7 @@ func _ready():
 
 func _show_initial_skill_selection():
 	waiting_for_skill_selection = true
-	wave_label.text = "Prepare Wave 1"
+	_show_wave_banner("Prepare Wave 1", Color(0.95, 0.85, 0.25))
 	# Small delay then show skill popup
 	await get_tree().create_timer(0.5).timeout
 	emit_signal("wave_skill_popup")
@@ -92,7 +92,7 @@ func _on_wave_timer_timeout():
 func start_wave():
 	print("Starting wave ", current_wave)
 	wave_in_progress = true
-	wave_label.text = "Wave %d" % current_wave
+	_show_wave_banner("Wave %d" % current_wave, Color.WHITE)
 	
 	# Roll wave event
 	var event = wave_events.roll_event(current_wave)
@@ -138,9 +138,10 @@ func check_wave_completion():
 		else:
 			# Show skill selection + shop after EVERY wave
 			waiting_for_skill_selection = true
+			_reward_wave_clear(current_wave)
 			current_wave += 1
 			_recover_party_between_waves()
-			wave_label.text = "Draft for Wave %d" % current_wave
+			_show_wave_banner("Draft for Wave %d" % current_wave, Color(0.95, 0.85, 0.25))
 			
 			# Generate shop
 			shop_system.generate_shop(current_wave, dead_heroes.size() > 0)
@@ -152,6 +153,7 @@ func _on_hero_died(character: BaseCharacter):
 	if not dead_heroes.has(character):
 		dead_heroes.append(character)
 	trigger_screen_shake(8.0)
+	_show_wave_banner("%s fell!" % character.name, Color(1.0, 0.45, 0.45))
 	print("Hero died: ", character.name, " | Dead heroes: ", dead_heroes.size())
 
 func check_player_death():
@@ -175,14 +177,14 @@ func _get_run_stats() -> Dictionary:
 func _on_game_over():
 	game_ended = true
 	wave_manager_timer.stop()
-	wave_label.text = "GAME OVER"
+	_show_wave_banner("GAME OVER", Color(1.0, 0.35, 0.35))
 	print("GAME OVER - All heroes have fallen!")
 	emit_signal("game_over", _get_run_stats())
 
 func _on_victory():
 	game_ended = true
 	wave_manager_timer.stop()
-	wave_label.text = "VICTORY!"
+	_show_wave_banner("VICTORY!", Color(1.0, 0.9, 0.35))
 	print("VICTORY - All waves completed!")
 	trigger_screen_shake(10.0)
 	emit_signal("victory", _get_run_stats())
@@ -215,7 +217,7 @@ func _track_kills():
 func _recover_party_between_waves():
 	for character in player_characters.get_children():
 		if character is BaseCharacter and not character.is_dead:
-			character.recover_between_waves(0.3)  # 30% heal between waves
+			character.recover_between_waves(0.35)
 
 func get_skill_tier_for_wave(wave: int) -> int:
 	return wave_manager.get_skill_tier_for_wave(wave)
@@ -234,6 +236,19 @@ func _process_shake(delta: float):
 		shake_intensity = max(0, shake_intensity - shake_decay * delta)
 	else:
 		position = original_camera_offset
+
+func _reward_wave_clear(cleared_wave: int):
+	var wave_bonus = cleared_wave * 20
+	global.add_currency(wave_bonus)
+
+func _show_wave_banner(text: String, tint: Color):
+	wave_label.text = text
+	wave_label.modulate = tint
+	wave_label.scale = Vector2.ONE * 1.35
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(wave_label, "scale", Vector2.ONE, 0.22)
+	tween.tween_property(wave_label, "modulate", Color.WHITE, 0.35)
 
 # Restart the game
 func restart_game():

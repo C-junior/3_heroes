@@ -10,10 +10,14 @@ var damage: int = 0  # Will be set based on wizard's attack damage
 func _ready():
 	set_physics_process(true)
 	connect("body_entered", Callable(self, "_on_body_entered"))
+	scale = Vector2.ONE * 1.15
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2.ONE, 0.12)
 
 # Set the direction for the projectile
 func set_direction(new_direction: Vector2):
 	direction = new_direction.normalized()
+	rotation = direction.angle()
 
 # Set the damage based on the wizard's attack damage
 func set_damage(new_damage: int):
@@ -29,4 +33,6 @@ func _on_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
+		if body.has_method("_play_feedback"):
+			body._play_feedback(Color(1.0, 0.55, 0.25), 0.16)
 		queue_free()  # Destroy the projectile after hitting

@@ -10,6 +10,7 @@ class_name BaseCharacter
 @onready var level_label: Label = $LevelLabel
 @onready var attack_timer: Timer = $Timer
 @onready var level_system: LevelSystem = $LevelSystem
+@onready var skill_name_location: Marker2D = $SkillNameLocation
 @export var lifesteal_percentage: float = 0.0  # Percentage of damage converted to health
 
 var shield_active: bool = false  # Indicates if the shield is active
@@ -125,6 +126,7 @@ func apply_lifesteal(damage_dealt: int) -> void:
 		current_health = min(current_health + heal_amount, max_health)  # Heal the character, but don't exceed max health
 		print("Lifesteal: healed", heal_amount, "HP from lifesteal.")
 		popuploc.popup(heal_amount)
+		_play_feedback(Color(0.35, 1.0, 0.55), 0.08)
 		update_health_label()
 
 # Handle taking damage
@@ -147,12 +149,8 @@ func take_damage(damage: int):
 		current_health -= reduced_damage
 		popuploc.popup(-reduced_damage)
 		update_health_label()
-		# Hit flash
-		var visual = get_visual_node()
-		if visual:
-			var tween = create_tween()
-			tween.tween_property(visual, "modulate", Color(1, 0.3, 0.3), 0.05)
-			tween.tween_property(visual, "modulate", Color(1, 1, 1), 0.15)
+		_play_feedback(Color(1.0, 0.35, 0.35), 0.12)
+		_shake_game_view(clamp(reduced_damage / 15.0, 2.0, 8.0))
 		if current_health <= 0:
 			die()
 
@@ -206,6 +204,7 @@ func receive_heal(heal: int):
 	current_health += heal
 	popuploc.popup(heal)
 	current_health = clamp(current_health, 0, max_health)
+	_play_feedback(Color(0.35, 1.0, 0.55), 0.1)
 	update_health_label()
 
 # Handle level-up and stat growth
@@ -233,6 +232,7 @@ func learn_skill(skill: Skill):
 	print("Learning skill: ", skill.name)
 	# Always add to learned skills so we can track bonuses
 	learned_skills.append(skill)
+	_announce_skill(skill.name)
 	
 	if skill.is_passive:
 		skill.apply_passive_effect(self)
@@ -322,3 +322,23 @@ func recover_between_waves(heal_ratio: float = 0.2):
 
 func _on_timer_timeout():
 	_on_attack_timeout()
+
+func _announce_skill(skill_name: String):
+	if skill_name_location and skill_name_location.has_method("popup"):
+		skill_name_location.popup(skill_name)
+
+func _play_feedback(flash_color: Color, punch: float):
+	var visual = get_visual_node()
+	if visual == null:
+		return
+	visual.modulate = flash_color
+	visual.scale = Vector2.ONE * (1.0 + punch)
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(visual, "modulate", Color.WHITE, 0.14)
+	tween.tween_property(visual, "scale", Vector2.ONE, 0.14)
+
+func _shake_game_view(intensity: float):
+	var main_game = get_tree().current_scene.get_node_or_null("MainGame")
+	if main_game and main_game.has_method("trigger_screen_shake"):
+		main_game.trigger_screen_shake(intensity)
