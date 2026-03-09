@@ -43,6 +43,13 @@ var is_stunned: bool = false  # Track stun state
 var active_skills = []  # Stores the active skills with cooldowns
 var learned_skills: Array = []
 
+# Equipment system
+var equipped_items: Dictionary = {
+	"weapon": null,
+	"armor": null,
+	"accessory": null
+}
+
 var current_health: int
 var target: Node2D  # Current attack target
 

@@ -61,7 +61,7 @@ func _setup_skill_cooldown(skill: Skill):
 # Called when a skill's cooldown finishes
 func _on_skill_ready(skill: Skill):
 	print("Skill ready again:", skill.name)
-	prite.modulate = Color(0,1,0)
+	sprite.modulate = Color(0,1,0)
 
 # Trigger the skill and start cooldown
 func use_skills():

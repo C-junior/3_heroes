@@ -1,6 +1,8 @@
+# ui.gd
 extends CanvasLayer
+class_name UI
 
-@onready var inventory: Inventory = %Inventory   # Shared inventory to display the active character's items
+@onready var inventory: GridContainer = %Inventory   # Shared inventory to display the active character's items
 @onready var balance_label: Label = %Balance
 
 @onready var cleric_button: Button = %cleric_button
