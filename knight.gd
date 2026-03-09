@@ -79,6 +79,8 @@ func update_charge_movement(delta: float):
 		
 
 func _process(delta: float):
+	if is_dead:
+		return
 	# Update charge movement if active
 	update_charge_movement(delta)
 

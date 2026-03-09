@@ -1,7 +1,7 @@
 res://main_game.tscn
-res://slot.gd
-res://main_game.gd
 res://popup_location.gd
+res://main_game.gd
+res://slot.gd
 res://Skills/charge.gd
 res://knight.gd
 res://Skills/Wizard/fireball_shader.tres

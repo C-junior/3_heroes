@@ -26,6 +26,8 @@ func _ready():
 	add_to_group("PlayerCharacters")
 
 func _process(delta: float):
+	if is_dead:
+		return
 	# Find nearest injured ally to heal
 	var injured_ally = find_injured_ally()
 	if injured_ally:

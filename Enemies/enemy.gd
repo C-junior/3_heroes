@@ -58,13 +58,28 @@ func move_and_attack(target_node: Node2D, delta: float) -> void:
 			attack(target_node)
 
 
+# Override to skip dead heroes
+func find_nearest_alive_target(group_name: String) -> Node2D:
+	var nearest_node: Node2D = null
+	var shortest_distance = INF
+	for node in get_tree().get_nodes_in_group(group_name):
+		if node.has_method("get_health") and node.is_dead:
+			continue
+		var distance = global_position.distance_to(node.global_position)
+		if distance < shortest_distance:
+			shortest_distance = distance
+			nearest_node = node
+	return nearest_node
+
 func _process(delta: float):
-	if taunt_target and is_instance_valid(taunt_target):
+	if taunt_target and is_instance_valid(taunt_target) and not taunt_target.is_dead:
 		target = taunt_target
 	else:
-		target = find_nearest_target("PlayerCharacters")
+		target = find_nearest_alive_target("PlayerCharacters")
 	if target:
 		move_and_attack(target, delta)
+	else:
+		velocity = Vector2.ZERO
 
 	# Apply knockback if there is any force left
 	if knockback_velocity.length() > 0:

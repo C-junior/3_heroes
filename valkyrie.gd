@@ -61,6 +61,8 @@ func use_skills():
 			print("Skill used:", skill.name)
 
 func _process(delta: float):
+	if is_dead:
+		return
 	# Find nearest enemy to attack
 	find_target_and_attack()
 	

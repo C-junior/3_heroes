@@ -52,9 +52,11 @@ var equipped_items: Dictionary = {
 
 var current_health: int
 var target: Node2D  # Current attack target
+var is_dead: bool = false  # Track death state for resurrection
 
 # Reference to the level system
 signal level_up_skill_popup
+signal hero_died(character: BaseCharacter)
 
 func _ready():
 	learned_skills = []
@@ -145,12 +147,36 @@ func take_damage(damage: int):
 		current_health -= reduced_damage
 		popuploc.popup(-reduced_damage)
 		update_health_label()
+		# Hit flash
+		var visual = get_visual_node()
+		if visual:
+			var tween = create_tween()
+			tween.tween_property(visual, "modulate", Color(1, 0.3, 0.3), 0.05)
+			tween.tween_property(visual, "modulate", Color(1, 1, 1), 0.15)
 		if current_health <= 0:
 			die()
 
-# Character dies
+# Character dies — disable instead of removing so we can revive
 func die():
-	queue_free()
+	is_dead = true
+	set_process(false)
+	set_physics_process(false)
+	visible = false
+	# Move off-screen so collision doesn't interfere
+	global_position = Vector2(-9999, -9999)
+	emit_signal("hero_died", self)
+	print(name, " has fallen!")
+
+# Revive a dead hero at a given HP ratio
+func revive(hp_ratio: float = 0.5):
+	is_dead = false
+	current_health = int(max_health * hp_ratio)
+	set_process(true)
+	set_physics_process(true)
+	visible = true
+	global_position = Vector2(100, 200)  # Respawn position
+	update_health_label()
+	print(name, " has been revived with ", current_health, " HP!")
 
 # Handle timeout after attack
 func _on_attack_timeout():
@@ -285,6 +311,8 @@ func find_target_and_attack():
 		velocity = Vector2.ZERO
 
 func _process(delta: float):
+	if is_dead:
+		return
 	find_target_and_attack()
 
 func recover_between_waves(heal_ratio: float = 0.2):

@@ -70,6 +70,8 @@ func _shoot_magic_bolt(target: Node2D):
 
 # Mana regeneration logic
 func _process(delta: float):
+	if is_dead:
+		return
 	# Regenerate mana over time
 	#wizard_mana = min(wizard_mana + mana_regen_rate * delta, 100)
 	#mana_progress_bar.value = wizard_mana
