@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "godot": {
+      "command": "node",
+      "args": ["C:/Users/02052284370/Documents/Dev/Gdev/3_heroes/godot-mcp/build/index.js"],
+      "env": {
+        "DEBUG": "true"
+      }
+    }
+  }
+}
