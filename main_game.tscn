@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://chgkv5dsnjvcr" path="res://cleric.tscn" id="3_jng1e"]
 [ext_resource type="PackedScene" uid="uid://dtw80xikug5sq" path="res://valkyrie.tscn" id="5_4l462"]
 [ext_resource type="PackedScene" uid="uid://brt66rrbwnw6e" path="res://wizard.tscn" id="6_y5edn"]
-[ext_resource type="Script" uid="uid://new_item_mgr" path="res://item_manager.gd" id="7_itemmgr"]
+[ext_resource type="Script" uid="uid://chl6gqr4kk4ph" path="res://item_manager.gd" id="7_itemmgr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_n6nty"]
 font_size = 24
