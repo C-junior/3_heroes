@@ -16,30 +16,20 @@ func _ready():
 	base_max_health = wizard_max_health
 	base_attack_damage = wizard_attack_damage
 	base_defense = wizard_defense
-	attack_range = wizard_attack_range
-
+	base_attack_range = wizard_attack_range
 	base_move_speed = wizard_move_speed
-	current_health = base_max_health
-
-	character_type = constants.CharacterType.MAGE  # Wizards are Mages
-
-	health_progress_bar.max_value = base_max_health  # Set max value for the progress bar
-	health_progress_bar.value = current_health  # Initialize progress bar value
-
-
-	attack_timer.wait_time = wizard_attack_cooldown
-	attack_timer.start()
-	update_stats()
-	update_health_label()
-
+	base_attack_cooldown = wizard_attack_cooldown
+	attack_range = wizard_attack_range
+	character_type = Constants.CharacterType.MAGE
+	super._ready()
 	add_to_group("PlayerCharacters")
-	learned_skills = []
 
 # Learn a new skill and initialize its timers
 func learn_skill(skill: Skill):
 	super.learn_skill(skill)
-	_setup_skill_cooldown(skill)
 	skill.init(self)
+	if not skill.is_passive:
+		_setup_skill_cooldown(skill)
 	print("Learned skill:", skill.name)
 
 # Set up cooldown timers for skills
@@ -57,7 +47,7 @@ func _on_skill_ready(skill: Skill):
 
 # Trigger the skill and start cooldown
 func use_skills():
-	for skill in learned_skills:
+	for skill in active_skills:
 		if cooldown_timers.has(skill) and cooldown_timers[skill].is_stopped():
 			skill.apply_effect(self)
 			cooldown_timers[skill].start()

@@ -8,11 +8,10 @@ class_name BaseCharacter
 @onready var health_progress_bar = $HealthProgressBAr
 @onready var popuploc = $PopupLocation
 @onready var level_label: Label = $LevelLabel
+@onready var attack_timer: Timer = $Timer
+@onready var level_system: LevelSystem = $LevelSystem
 @export var lifesteal_percentage: float = 0.0  # Percentage of damage converted to health
-#@onready var skill_name_location: Marker2D = $SkillNameLocation
 
-
-#skills var
 var shield_active: bool = false  # Indicates if the shield is active
 var arcane_shield_skill: Skill = null  # Reference to the active Arcane Shield skill
 var shield_block_count: int = 0  # Tracks how many attacks can be blocked
@@ -45,37 +44,41 @@ var active_skills = []  # Stores the active skills with cooldowns
 var learned_skills: Array = []
 
 var current_health: int
-@export var attack_timer: Timer = Timer.new()
 var target: Node2D  # Current attack target
 
 # Reference to the level system
 signal level_up_skill_popup
-@onready var level_system = LevelSystem.new()  # Assuming your LevelSystem handles leveling
 
 func _ready():
+	learned_skills = []
+	active_skills = []
 	current_health = max_health
 	attack_timer.wait_time = attack_cooldown
 	attack_timer.one_shot = true
-	add_child(attack_timer)
-	attack_timer.connect("timeout", Callable(self, "_on_attack_timeout"))
-	add_to_group("PlayerCharacters")
+	if not attack_timer.is_connected("timeout", Callable(self, "_on_attack_timeout")):
+		attack_timer.connect("timeout", Callable(self, "_on_attack_timeout"))
 
 	# Initialize stats and connect level-up signals
 	update_stats()
-	level_system.connect("leveled_up", Callable(self, "_on_leveled_up"))
+	if not level_system.is_connected("leveled_up", Callable(self, "_on_leveled_up")):
+		level_system.connect("leveled_up", Callable(self, "_on_leveled_up"))
 	update_level_ui()
 
 	# Initialize stun timer
 	stun_timer.one_shot = true
-	stun_timer.connect("timeout", Callable(self, "_on_stun_end"))
+	if not stun_timer.is_connected("timeout", Callable(self, "_on_stun_end")):
+		stun_timer.connect("timeout", Callable(self, "_on_stun_end"))
 	add_child(stun_timer)
 
 # Update stats based on equipped items
 func update_stats():
-	attack_damage = base_attack_damage + (damage_growth * level_system.level)
-	defense = base_defense + (defense_growth * level_system.level)
+	var effective_level = max(level_system.level - 1, 0)
+	attack_damage = base_attack_damage + (damage_growth * effective_level)
+	defense = base_defense + (defense_growth * effective_level)
 	move_speed = base_move_speed
-	max_health = base_max_health + (health_growth * level_system.level)
+	attack_cooldown = base_attack_cooldown
+	max_health = base_max_health + (health_growth * effective_level)
+	attack_timer.wait_time = attack_cooldown
 
 	for skill in learned_skills:
 		if skill != null and skill.is_passive:
@@ -96,6 +99,8 @@ func update_stats():
 # Update the health label UI
 func update_health_label():
 	health_label.text = str(current_health)
+	health_progress_bar.max_value = max_health
+	health_progress_bar.value = current_health
 
 # Attack logic
 func attack(target: Node2D):
@@ -118,7 +123,9 @@ func take_damage(damage: int):
 	if shield_active and arcane_shield_skill != null:
 		damage = arcane_shield_skill.absorb_damage(damage, self)
 	if is_invincible:
-		self.sprite.modulate = Color(1,1,0)
+		var invincible_visual = get_visual_node()
+		if invincible_visual:
+			invincible_visual.modulate = Color(1, 1, 0)
 		print(name, "is invincible and took no damage!")
 		return
 	if shield_block_count > 0:
@@ -127,11 +134,10 @@ func take_damage(damage: int):
 		if shield_block_count == 0:
 			print("Shield has been broken!")
 	else:
-		var reduced_damage = max(damage - defense, 0)
+		var reduced_damage = max(damage - defense, 1)
 		current_health -= reduced_damage
 		popuploc.popup(-reduced_damage)
 		update_health_label()
-		health_progress_bar.value = current_health
 		if current_health <= 0:
 			die()
 
@@ -168,15 +174,12 @@ func receive_heal(heal: int):
 	popuploc.popup(heal)
 	current_health = clamp(current_health, 0, max_health)
 	update_health_label()
-	health_progress_bar.value = current_health
 
 # Handle level-up and stat growth
 func _on_leveled_up():
-	max_health += health_growth
-	attack_damage += damage_growth
-	defense += defense_growth
-	current_health = max_health
 	update_stats()
+	current_health = max_health
+	update_health_label()
 	update_level_ui()
 
 # Update the level label UI
@@ -187,7 +190,6 @@ func update_level_ui():
 func add_xp_to_party(amount: int):
 	for player in get_tree().get_nodes_in_group("PlayerCharacters"):
 		player.level_system.add_xp(amount)
-		_on_leveled_up()
 
 # Add global gold when enemy dies
 func add_gold(gold: int):
@@ -214,8 +216,8 @@ func stun(duration: float) -> void:
 	is_stunned = true
 	print("Character stunned for", duration, "seconds.")
 	velocity = Vector2.ZERO
-	stun_timer.start()
 	stun_timer.wait_time = duration
+	stun_timer.start()
 
 func stunned():
 	if is_stunned == true:
@@ -226,7 +228,9 @@ func stunned():
 func _on_stun_end() -> void:
 	is_stunned = false
 	print("Stun ended.")
-	target.sprite.modulate = Color(1,1,1)
+	var visual = get_visual_node()
+	if visual:
+		visual.modulate = Color(1, 1, 1)
 
 var is_invincible: bool = false
 var invincibility_timer: Timer = null
@@ -238,17 +242,26 @@ func set_invincible(duration: float) -> void:
 		invincibility_timer = Timer.new()
 		invincibility_timer.one_shot = true
 		add_child(invincibility_timer)
+		invincibility_timer.connect("timeout", Callable(self, "_end_invincibility"))
 	invincibility_timer.wait_time = duration
 	invincibility_timer.start()
-	invincibility_timer.connect("timeout", Callable(self, "_end_invincibility"))
 
 func _end_invincibility() -> void:
 	is_invincible = false
-	self.sprite.modulate = Color(1,1,1)
+	var visual = get_visual_node()
+	if visual:
+		visual.modulate = Color(1, 1, 1)
 	print(name, "is no longer invincible.")
+
+func get_visual_node() -> CanvasItem:
+	var visual = get("sprite")
+	if visual is CanvasItem:
+		return visual
+	return null
 
 func find_target_and_attack():
 	if is_stunned:
+		velocity = Vector2.ZERO
 		return
 
 	target = find_nearest_target("Enemies")
@@ -266,3 +279,11 @@ func find_target_and_attack():
 
 func _process(delta: float):
 	find_target_and_attack()
+
+func recover_between_waves(heal_ratio: float = 0.2):
+	if current_health <= 0:
+		return
+	receive_heal(int(max_health * heal_ratio))
+
+func _on_timer_timeout():
+	_on_attack_timeout()

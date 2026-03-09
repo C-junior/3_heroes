@@ -10,11 +10,7 @@ extends PanelContainer
 
 
 func _ready():
-	print("Attack Label Exists: ", attack_label != null)
-	print("Defense Label Exists: ", defense_label != null)
-	print("Speed Label Exists: ", speed_label != null)
-	print("Health Label Exists: ", health_label != null)
-	print("Attack Speed Label Exists: ", attack_speed_label != null)
+	pass
 
 # Update the stats for the character passed to this function
 func update_stats(character):
@@ -39,8 +35,7 @@ func update_stats(character):
 	if health_label:
 		health_label.bbcode_text = "   [b]HP:[/b] " + str(character.current_health) + "/" + str(character.max_health)
 	if attack_speed_label:
-		var attack_speed = int((1.0 - character.attack_cooldown) * 100)
-		var color = "green" if attack_speed > 51 else "red"
-		attack_speed_label.bbcode_text = "   [b]Attack Speed:[/b] [color=%s]%d%%[/color]" % [color, attack_speed]
+		var attacks_per_second = snappedf(1.0 / max(character.attack_cooldown, 0.01), 0.01)
+		attack_speed_label.bbcode_text = "   [b]APS:[/b] %.2f" % attacks_per_second
 	else:
 		print("Labels not updated correctly")

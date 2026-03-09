@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 @onready var inventory: Inventory = %Inventory   # Shared inventory to display the active character's items
-
+@onready var balance_label: Label = %Balance
 
 @onready var cleric_button: Button = %cleric_button
 @onready var valkyrie_button: Button = %valkyrie_button
@@ -16,14 +16,12 @@ extends CanvasLayer
 @onready var confirm_button = $SkillPanel/ConfirmButton  # Confirm button
 @onready var skill_panel = $SkillPanel  # The whole skill panel
 
-@onready var cleric = get_node_or_null("/root/MainGame/PlayerCharacters/Cleric")
-@onready var valkyrie = get_node_or_null("/root/MainGame/PlayerCharacters/Valkyrie")
-@onready var wizard = get_node_or_null("/root/MainGame/PlayerCharacters/Wizard")
-
-@onready var wave_manager = get_node("/root/MainGame")  # The main game
 @onready var stats_display: PanelContainer = %StatsDisplay
 
-
+var wave_manager: Node = null
+var cleric: BaseCharacter = null
+var valkyrie: BaseCharacter = null
+var wizard: BaseCharacter = null
 
 var skills_selected_cleric = false
 var skills_selected_valkyrie = false
@@ -36,6 +34,10 @@ signal character_switched(character: BaseCharacter)
 var active_character: BaseCharacter = null
 
 func _ready():
+	_resolve_scene_refs()
+	if wave_manager == null:
+		push_warning("UI could not find MainGame node.")
+		return
 	# Listen for the wave signal to trigger skill selection
 	wave_manager.connect("wave_skill_popup", Callable(self, "_show_skill_selection"))
 	
@@ -46,6 +48,17 @@ func _ready():
 	if valkyrie:
 		switch_to_character(valkyrie)
 	set_buttons_transparency(true)
+
+func _resolve_scene_refs():
+	var scene_root = get_tree().current_scene
+	if scene_root == null:
+		return
+	wave_manager = scene_root.get_node_or_null("MainGame")
+	if wave_manager == null:
+		return
+	cleric = wave_manager.get_node_or_null("PlayerCharacters/Cleric")
+	valkyrie = wave_manager.get_node_or_null("PlayerCharacters/Valkyrie")
+	wizard = wave_manager.get_node_or_null("PlayerCharacters/Wizard")
 
 enum MODE {
 	INVENTORY,
@@ -109,7 +122,8 @@ func update_inventory_with_character_items(character: BaseCharacter):
 		slot.item = null
 
 	# Add equipped items back to their respective slots
-	if character.has_method("can_equip") and "equipped_items" in character:
+	var equipped_items = character.get("equipped_items")
+	if character.has_method("can_equip") and equipped_items != null:
 		for slot_name in character.equipped_items.keys():
 			var item = character.equipped_items[slot_name]
 			if item != null and character.can_equip(item):
@@ -131,9 +145,11 @@ func update_ui_stats():
 
 # Show skill selection after each wave
 func _show_skill_selection():
+	_resolve_scene_refs()
 	get_tree().paused = true  # Pause the game
 	skill_panel.visible = true  # Show the skill panel
-	confirm_button.visible = false  # Hide confirm button until at least one skill is selected
+	confirm_button.visible = false
+	confirm_button.disabled = true
 
 	# Reset skill selection flags
 	skills_selected_cleric = false
@@ -141,20 +157,16 @@ func _show_skill_selection():
 	skills_selected_wizard = false
 
 	# Load skills for each character from SkillDatabase
-	var current_wave_level = wave_manager.current_wave
-	# Map wave to skill tier (waves 1-3 = tier 3, waves 4-6 = tier 6, waves 7+ = tier 9)
-	var skill_tier = 3
-	if current_wave_level >= 7:
-		skill_tier = 9
-	elif current_wave_level >= 4:
-		skill_tier = 6
+	var current_wave_level = max(wave_manager.current_wave, 1)
+	var skill_tier = wave_manager.get_skill_tier_for_wave(current_wave_level)
+	confirm_button.text = "Start Wave %d" % current_wave_level
 
 	if cleric:
-		_setup_skill_buttons(cleric_buttons, SkillDB.get_skills_for_level(cleric.character_type, skill_tier), "cleric")
+		_setup_skill_buttons(cleric_buttons, SkillDB.get_skills_for_level(cleric.character_type, skill_tier, _get_learned_skill_names(cleric)), "cleric")
 	if valkyrie:
-		_setup_skill_buttons(valkyrie_buttons, SkillDB.get_skills_for_level(valkyrie.character_type, skill_tier), "valkyrie")
+		_setup_skill_buttons(valkyrie_buttons, SkillDB.get_skills_for_level(valkyrie.character_type, skill_tier, _get_learned_skill_names(valkyrie)), "valkyrie")
 	if wizard:
-		_setup_skill_buttons(wizard_buttons, SkillDB.get_skills_for_level(wizard.character_type, skill_tier), "wizard")
+		_setup_skill_buttons(wizard_buttons, SkillDB.get_skills_for_level(wizard.character_type, skill_tier, _get_learned_skill_names(wizard)), "wizard")
 
 
 
@@ -162,17 +174,21 @@ func _show_skill_selection():
 func _setup_skill_buttons(buttons_container: HBoxContainer, skills: Array, character_type: String):
 	# Safely disconnect previous signals
 	for button in buttons_container.get_children():
-		if button.is_connected("pressed", Callable(self, "_on_skill_selected")):
-			button.disconnect("pressed", Callable(self, "_on_skill_selected"))
+		for connection in button.pressed.get_connections():
+			button.pressed.disconnect(connection.callable)
 		button.disabled = false  # Re-enable buttons
+		button.visible = true
 	
 	# Set up new skills
-	for i in range(min(buttons_container.get_child_count(), skills.size())):
+	for i in range(buttons_container.get_child_count()):
 		var button = buttons_container.get_child(i)
+		if i >= skills.size():
+			button.visible = false
+			continue
 		var skill = skills[i]
 		button.text = skill.name
 		button.icon = skill.icon
-		button.tooltip_text = skill.description  # Add tooltip for description
+		button.tooltip_text = _build_skill_tooltip(skill)
 		button.connect("pressed", Callable(self, "_on_skill_selected").bind(buttons_container, skill, character_type))
 
 # When a skill is selected for any character
@@ -205,9 +221,9 @@ func _disable_skill_buttons(buttons_container: HBoxContainer):
 
 # Check if at least one character has selected a skill (more flexible for fun gameplay)
 func _check_all_skills_selected():
-	# Show confirm button if ANY skill was selected (more fun, faster gameplay)
-	if skills_selected_cleric or skills_selected_valkyrie or skills_selected_wizard:
-		confirm_button.visible = true
+	var all_selected = skills_selected_cleric and skills_selected_valkyrie and skills_selected_wizard
+	confirm_button.visible = all_selected
+	confirm_button.disabled = not all_selected
 
 # Confirm skill selections and resume the game
 func _on_confirm_skills():
@@ -224,13 +240,30 @@ func _on_confirm_skills():
 func _reset_skill_buttons():
 	for button in cleric_buttons.get_children():
 		button.disabled = false
+		button.visible = true
 	for button in valkyrie_buttons.get_children():
 		button.disabled = false
+		button.visible = true
 	for button in wizard_buttons.get_children():
 		button.disabled = false
+		button.visible = true
 
 func _on_confirm_button_pressed() -> void:
 	_on_confirm_skills()
 	
 func _process(delta: float) -> void:
 	update_ui_stats()
+	balance_label.text = str(global.currency)
+
+func _get_learned_skill_names(character: BaseCharacter) -> Array:
+	var learned_names: Array = []
+	if character == null:
+		return learned_names
+	for skill in character.learned_skills:
+		learned_names.append(skill.name)
+	return learned_names
+
+func _build_skill_tooltip(skill: Skill) -> String:
+	if skill.cooldown > 0.0:
+		return "%s\nCooldown: %.1fs" % [skill.description, skill.cooldown]
+	return skill.description

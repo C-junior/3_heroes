@@ -18,3 +18,13 @@ var wave_enemies = {
 # Function to retrieve enemy setup for a specific wave
 func get_wave_enemies(wave_number: int) -> Array:
 	return wave_enemies.get(wave_number, [])
+
+func get_wave_multiplier(wave_number: int) -> float:
+	return 1.0 + (max(wave_number, 1) - 1) * 0.2
+
+func get_skill_tier_for_wave(wave_number: int) -> int:
+	if wave_number >= 7:
+		return 9
+	if wave_number >= 4:
+		return 6
+	return 3

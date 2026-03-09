@@ -280,13 +280,15 @@ func _create_arcane_shield() -> Skill:
 	return arcane_shield
 
 # Randomly select 3 skills for each wave
-func get_skills_for_level(character_type: int, level: int) -> Array:
+func get_skills_for_level(character_type: int, level: int, excluded_skill_names: Array = []) -> Array:
 	if character_type in skills and level in skills[character_type]:
-		var available_skills = skills[character_type][level]
-		var chosen_skills = []
-		while chosen_skills.size() < 3 and available_skills.size() > 0:
-			var index = randi() % available_skills.size()
-			chosen_skills.append(available_skills[index])
-			available_skills.remove_at(index)
-		return chosen_skills
+		var skill_pool = skills[character_type][level]
+		var available_skills = []
+		for skill in skill_pool:
+			if not excluded_skill_names.has(skill.name):
+				available_skills.append(skill)
+		if available_skills.size() < 3:
+			available_skills = skill_pool.duplicate()
+		available_skills.shuffle()
+		return available_skills.slice(0, min(3, available_skills.size()))
 	return []  # No skills available for this level

@@ -3,7 +3,7 @@
 extends "res://Enemies/enemy.gd"
 
 @export var king_goblin_max_health: int = 5000  # Higher health for the boss
-@export var king_goblin_attack_damage: int = 100  # Stronger attack
+@export var king_goblin_attack_damage: int = 80
 @export var summon_cooldown: float = 10.0  # Time between minion summons
 @export var area_attack_radius: float = 150.0  # Radius for the area attack
 @export var area_attack_damage: int = 150  # Damage for area attack
@@ -16,12 +16,11 @@ extends "res://Enemies/enemy.gd"
 var is_enraged: bool = false
 
 func _ready():
-	attack_damage = king_goblin_attack_damage
-	current_health = king_goblin_max_health
-	health_progress_bar.max_value = king_goblin_max_health
-	health_progress_bar.value = current_health
-	move_speed = enemy_move_speed * 0.7
-	add_to_group("Enemies")
+	enemy_name = "King Goblin"
+	goblin_max_health = king_goblin_max_health
+	enemy_attack_damage = king_goblin_attack_damage
+	enemy_move_speed = 35
+	super._ready()
 
 	# Set up summon and area attack timers
 	summon_timer.wait_time = summon_cooldown

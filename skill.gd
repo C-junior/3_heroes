@@ -16,7 +16,7 @@ class_name Skill
 @export var health_bonus: int = 0
 
 func init(character: BaseCharacter) -> void:
-	apply_effect(character)
+	pass
 
 
 # This base method is meant to be overridden by specific skill implementations

@@ -22,6 +22,7 @@ var waiting_for_skill_selection = false
 @export var spawn_area_max: Vector2 = Vector2(750, 350)
 
 func _ready():
+	randomize()
 	# Place characters in a fixed position
 	var characters = player_characters.get_children()
 	for i in range(characters.size()):
@@ -36,7 +37,7 @@ func _ready():
 
 func _show_initial_skill_selection():
 	waiting_for_skill_selection = true
-	wave_label.text = "Choose Skills!"
+	wave_label.text = "Prepare Wave 1"
 	# Small delay then show skill popup
 	await get_tree().create_timer(0.5).timeout
 	emit_signal("wave_skill_popup")
@@ -61,12 +62,13 @@ func _on_wave_timer_timeout():
 func start_wave():
 	print("Starting wave ", current_wave)
 	wave_in_progress = true
-	wave_label.text = "Wave " + str(current_wave)
+	wave_label.text = "Wave %d" % current_wave
 
 	spawn_wave_enemies(current_wave)
 
 func spawn_wave_enemies(wave: int):
 	var wave_setup = wave_manager.get_wave_enemies(wave)
+	var wave_multiplier = wave_manager.get_wave_multiplier(wave)
 
 	for enemy_info in wave_setup:
 		var enemy_scene_path = enemy_info["scene_path"]
@@ -79,6 +81,8 @@ func spawn_wave_enemies(wave: int):
 				randf_range(spawn_area_min.x, spawn_area_max.x),
 				randf_range(spawn_area_min.y, spawn_area_max.y)
 			)
+			if enemy.has_method("apply_wave_scaling"):
+				enemy.apply_wave_scaling(wave_multiplier)
 
 func check_wave_completion():
 	if enemies.get_child_count() == 0 and wave_in_progress:
@@ -90,9 +94,10 @@ func check_wave_completion():
 		else:
 			# Show skill selection after EVERY wave
 			waiting_for_skill_selection = true
-			wave_label.text = "Choose Skills!"
-			emit_signal("wave_skill_popup")
 			current_wave += 1
+			_recover_party_between_waves()
+			wave_label.text = "Draft for Wave %d" % current_wave
+			emit_signal("wave_skill_popup")
 
 func check_player_death():
 	if player_characters.get_child_count() == 0 and not game_ended:
@@ -119,3 +124,11 @@ func _process(delta: float):
 	# Check if the wave is completed in each frame
 	check_wave_completion()
 	check_player_death()
+
+func _recover_party_between_waves():
+	for character in player_characters.get_children():
+		if character.has_method("recover_between_waves"):
+			character.recover_between_waves(0.2)
+
+func get_skill_tier_for_wave(wave: int) -> int:
+	return wave_manager.get_skill_tier_for_wave(wave)

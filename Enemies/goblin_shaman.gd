@@ -8,9 +8,9 @@ func _ready():
 	enemy_name = "Goblin Shaman"
 	min_gold_reward = 20  # Minimum gold to drop
 	max_gold_reward = 45 # Maximum gold to drop
-	enemy_attack_damage = magic_attack_damage
-	enemy_move_speed = 50
-	goblin_max_health = 800
+	enemy_attack_damage = 45
+	enemy_move_speed = 35
+	goblin_max_health = 80
 	attack_range = shaman_attack_range
 	super._ready()
 

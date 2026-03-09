@@ -7,9 +7,9 @@ func _ready() -> void:
 	enemy_name = "Goblin Assassin"
 	min_gold_reward = 30  # Minimum gold to drop
 	max_gold_reward = 50 # Maximum gold to drop
-	enemy_attack_damage = 80
+	enemy_attack_damage = 60
 	enemy_move_speed = 70
-	goblin_max_health = 600
+	goblin_max_health = 120
 
 	# Delay appearance
 	sprite.visible = false

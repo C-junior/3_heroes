@@ -12,14 +12,16 @@ var knockback_reduction_rate: float = 200  # Knockback reduction rate
 var is_slowed: bool = false
 var original_speed: int
 var taunt_timer: Timer = null  # Timer to manage taunt duration
+var taunt_target: Node2D = null
 
 func _ready():
-	attack_damage = enemy_attack_damage
-	move_speed = enemy_move_speed
-	original_speed = enemy_move_speed
-	current_health = goblin_max_health
-	health_progress_bar.max_value = goblin_max_health  # Set max value for the progress bar
-	health_progress_bar.value = current_health  # Initialize progress bar value
+	base_attack_damage = enemy_attack_damage
+	base_move_speed = enemy_move_speed
+	base_max_health = goblin_max_health
+	base_attack_cooldown = attack_cooldown
+	super._ready()
+	current_health = max_health
+	original_speed = move_speed
 	add_to_group("Enemies")
 
 	# Initialize taunt timer
@@ -27,6 +29,18 @@ func _ready():
 	taunt_timer.one_shot = true
 	add_child(taunt_timer)
 	taunt_timer.connect("timeout", Callable(self, "_on_taunt_end"))
+
+func apply_wave_scaling(multiplier: float) -> void:
+	base_max_health = int(round(base_max_health * multiplier))
+	base_attack_damage = int(round(base_attack_damage * multiplier))
+	base_defense = int(round(max(1.0, base_defense * (1.0 + (multiplier - 1.0) * 0.5))))
+	base_move_speed = int(round(base_move_speed * (1.0 + (multiplier - 1.0) * 0.15)))
+	update_stats()
+	current_health = max_health
+	original_speed = move_speed
+	xp_reward = int(round(xp_reward * (1.0 + (multiplier - 1.0) * 0.5)))
+	min_gold_reward = int(round(min_gold_reward * multiplier))
+	max_gold_reward = int(round(max_gold_reward * multiplier))
 
 # Move towards and attack the target
 func move_and_attack(target_node: Node2D, delta: float) -> void:
@@ -45,8 +59,10 @@ func move_and_attack(target_node: Node2D, delta: float) -> void:
 
 
 func _process(delta: float):
-
-	target = find_nearest_target("PlayerCharacters")
+	if taunt_target and is_instance_valid(taunt_target):
+		target = taunt_target
+	else:
+		target = find_nearest_target("PlayerCharacters")
 	if target:
 		move_and_attack(target, delta)
 
@@ -92,6 +108,14 @@ func restore_speed():
 	sprite.modulate = Color(1, 1, 1)
 	is_slowed = false
 
+func force_attack(forced_target: Node2D, duration: float) -> void:
+	taunt_target = forced_target
+	taunt_timer.wait_time = duration
+	taunt_timer.start()
+
+func _on_taunt_end() -> void:
+	taunt_target = null
+
 
 @export var xp_reward: int = 100
 @export var min_gold_reward: int = 10  # Minimum gold to drop
@@ -99,21 +123,11 @@ func restore_speed():
 
 # Override the die function to reward XP and random gold
 func die():
-	# Grant XP and random gold to all player characters
-	var party_manager = get_tree().root.get_node_or_null("MainGame/PlayerCharacters")
-	
-	if party_manager == null:
-		print("Warning: Could not find PlayerCharacters node")
-		queue_free()
-		return
-	
-	# Calculate random gold reward
+	var party_members = get_tree().get_nodes_in_group("PlayerCharacters")
 	var random_gold_reward = randi() % (max_gold_reward - min_gold_reward + 1) + min_gold_reward
-
-	for player in party_manager.get_children():
-		if player.has_method("add_xp_to_party"):
-			player.add_xp_to_party(xp_reward)
-			player.add_gold(random_gold_reward)
-			print(random_gold_reward," receberam")
+	global.add_currency(random_gold_reward)
+	for player in party_members:
+		if player.level_system:
+			player.level_system.add_xp(xp_reward)
 
 	queue_free()
