@@ -158,7 +158,7 @@ func check_player_death():
 	# Count alive heroes
 	var alive_count = 0
 	for hero in player_characters.get_children():
-		if not hero.is_dead:
+		if hero is BaseCharacter and not hero.is_dead:
 			alive_count += 1
 	
 	if alive_count == 0 and not game_ended:
@@ -214,7 +214,7 @@ func _track_kills():
 
 func _recover_party_between_waves():
 	for character in player_characters.get_children():
-		if character.has_method("recover_between_waves") and not character.is_dead:
+		if character is BaseCharacter and not character.is_dead:
 			character.recover_between_waves(0.3)  # 30% heal between waves
 
 func get_skill_tier_for_wave(wave: int) -> int:

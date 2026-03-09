@@ -63,7 +63,7 @@ func find_nearest_alive_target(group_name: String) -> Node2D:
 	var nearest_node: Node2D = null
 	var shortest_distance = INF
 	for node in get_tree().get_nodes_in_group(group_name):
-		if node.has_method("get_health") and node.is_dead:
+		if node is BaseCharacter and node.is_dead:
 			continue
 		var distance = global_position.distance_to(node.global_position)
 		if distance < shortest_distance:
@@ -72,7 +72,7 @@ func find_nearest_alive_target(group_name: String) -> Node2D:
 	return nearest_node
 
 func _process(delta: float):
-	if taunt_target and is_instance_valid(taunt_target) and not taunt_target.is_dead:
+	if taunt_target and is_instance_valid(taunt_target) and (not taunt_target is BaseCharacter or not taunt_target.is_dead):
 		target = taunt_target
 	else:
 		target = find_nearest_alive_target("PlayerCharacters")

@@ -51,7 +51,7 @@ func _summon_minions():
 func _perform_area_attack():
 	var players_in_radius = get_tree().get_nodes_in_group("PlayerCharacters")
 	for player in players_in_radius:
-		if player.is_dead:
+		if player is BaseCharacter and player.is_dead:
 			continue
 		var distance = global_position.distance_to(player.global_position)
 		if distance <= area_attack_radius:
