@@ -47,10 +47,14 @@ func _trigger_radiant_aura(character: BaseCharacter) -> void:
 # Called each second to heal all allies within range
 func _apply_heal_tick(character: BaseCharacter) -> void:
 	heal_ticks += 1
-	
+
 	# Heal all allies in the PlayerCharacters group
 	var allies = character.get_tree().get_nodes_in_group("PlayerCharacters")
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		ally.receive_heal(regen_amount)
 		print("Radiant Aura healed", ally.name, "for", regen_amount, "HP on tick", heal_ticks)
 

@@ -23,9 +23,13 @@ func apply_effect(character: BaseCharacter) -> void:
 func _trigger_holy_hands(character: BaseCharacter) -> void:
 	var allies = character.get_tree().get_nodes_in_group("PlayerCharacters")
 	var valid_allies = []
-	
+
 	# Collect allies excluding the cleric
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		if ally != character:  # Exclude the cleric
 			valid_allies.append(ally)
 	if valid_allies.size() > 0:

@@ -25,6 +25,10 @@ func _trigger_mass_heal(character: BaseCharacter) -> void:
 
 	# Apply healing and add visual effects
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		var heal_amount = ally.get_max_health() * heal_percentage
 		ally.receive_heal(heal_amount)
 		print("Mass Heal healed", ally.name, "for", heal_amount)

@@ -36,3 +36,6 @@ res://Skills/Cleric/purifying_wave_effect.tscn
 res://Skills/Cleric/divine_shield_effect.tscn
 res://Skills/Valkyrie/valhallas_call_effect.tscn
 res://ui.tscn
+res://Skills/mass_heal.gd
+res://Skills/purifying_wave.gd
+res://Skills/ressurection.gd

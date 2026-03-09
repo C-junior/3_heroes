@@ -51,6 +51,10 @@ func _find_best_ally_to_shield(character: BaseCharacter) -> BaseCharacter:
 	var best_ally = null
 
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		var enemy_count = _count_enemies_near(ally)
 		if enemy_count > max_enemies_nearby:
 			max_enemies_nearby = enemy_count
