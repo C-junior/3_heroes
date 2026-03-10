@@ -1,0 +1,269 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/ui.gd" id="1_ui"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpbar"]
+bg_color = Color(0.7, 0.15, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="UI" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_ui")
+
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="WaveLabel" type="Label" parent="TopBar"]
+custom_minimum_size = Vector2(160, 0)
+text = "Wave: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="TopBar"]
+custom_minimum_size = Vector2(140, 0)
+text = "Gold: 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TokenLabel" type="Label" parent="TopBar"]
+custom_minimum_size = Vector2(130, 0)
+text = "Tokens: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UnitCountLabel" type="Label" parent="TopBar"]
+custom_minimum_size = Vector2(120, 0)
+text = "Units: 1/4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BaseHPBar" type="ProgressBar" parent="TopBar"]
+custom_minimum_size = Vector2(350, 35)
+size_flags_horizontal = 6
+min_value = 0.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxFlat_hpbar")
+
+[node name="BaseHPLabel" type="Label" parent="TopBar/BaseHPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "1000 / 1000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+
+[node name="BottomBar" type="HBoxContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -55.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="StartWaveButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(160, 45)
+text = "⚔️ START WAVE"
+
+[node name="RecruitButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(120, 45)
+text = "👥 Recruit"
+
+[node name="ShopButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(100, 45)
+text = "🛒 Shop"
+
+[node name="RepairButton" type="Button" parent="BottomBar"]
+custom_minimum_size = Vector2(120, 45)
+text = "🔧 Repair Base"
+
+[node name="SpeedButtons" type="HBoxContainer" parent="BottomBar"]
+custom_minimum_size = Vector2(0, 45)
+
+[node name="Speed1x" type="Button" parent="BottomBar/SpeedButtons"]
+custom_minimum_size = Vector2(50, 40)
+text = "1x"
+
+[node name="Speed2x" type="Button" parent="BottomBar/SpeedButtons"]
+custom_minimum_size = Vector2(50, 40)
+text = "2x"
+
+[node name="Speed3x" type="Button" parent="BottomBar/SpeedButtons"]
+custom_minimum_size = Vector2(50, 40)
+text = "3x"
+
+
+[node name="RecruitmentPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 450.0
+offset_top = 100.0
+offset_right = 830.0
+offset_bottom = 450.0
+
+[node name="MarginContainer" type="MarginContainer" parent="RecruitmentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RecruitmentPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="RecruitmentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "👥 RECRUITMENT CENTER"
+horizontal_alignment = 1
+
+[node name="TokensAvailable" type="Label" parent="RecruitmentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Tokens Available: 0"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="RecruitmentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RecruitList" type="VBoxContainer" parent="RecruitmentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CloseRecruitBtn" type="Button" parent="RecruitmentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close"
+
+
+[node name="GameOverPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOverPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 150
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverPanel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="GameOverTitle" type="Label" parent="GameOverPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "💀 GAME OVER 💀"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="GameOverPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Wave Reached: 0
+Medals Earned: 0"
+horizontal_alignment = 1
+
+[node name="PrestigeButton" type="Button" parent="GameOverPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "🏅 Prestige & Restart"
+
+[node name="QuitButton" type="Button" parent="GameOverPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "Quit"
+
+
+[node name="VictoryPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VictoryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 150
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryPanel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VictoryTitle" type="Label" parent="VictoryPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "🎉 VICTORY! 🎉"
+horizontal_alignment = 1
+
+[node name="VictoryMessage" type="Label" parent="VictoryPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Demo Complete! Wave 30 Cleared!"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="VictoryPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "Continue Playing (Endless)"
+
+[node name="PrestigeButton" type="Button" parent="VictoryPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "🏅 Prestige & Restart"
+
+
+[node name="SkillUnlockPopup" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SkillUnlockPopup"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillUnlockPopup/MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="SkillUnlockPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "🌟 New Skill Available! 🌟"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SkillUnlockPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SkillList" type="VBoxContainer" parent="SkillUnlockPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+
+[connection signal="pressed" from="RecruitmentPanel/MarginContainer/VBoxContainer/CloseRecruitBtn" to="." method="_on_recruit_pressed"]
+[connection signal="pressed" from="GameOverPanel/MarginContainer/VBoxContainer/PrestigeButton" to="." method="_on_prestige_pressed"]
+[connection signal="pressed" from="VictoryPanel/MarginContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="VictoryPanel/MarginContainer/VBoxContainer/PrestigeButton" to="." method="_on_prestige_pressed"]

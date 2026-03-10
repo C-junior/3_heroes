@@ -11,23 +11,24 @@ config_version=5
 [application]
 
 config/name="3 Heroes Stand"
-run/main_scene="res://main_game.tscn"
+run/main_scene="uid://kuka26t1av42"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://Assets/icon.svg"
 
 [autoload]
 
+GameManager="*res://Scripts/game_manager.gd"
 ItemDB="*res://Assets/Items/ItemDatabase.gd"
-UI="*res://ui.tscn"
+UI="*res://Scenes/ui.tscn"
 itemmanager="*res://item_manager.gd"
-constants="*res://Constants.gd"
+constants="*res://Scripts/Constants.gd"
 global="*res://global.gd"
-SkillDB="*res://SkillDatabase.gd"
+SkillDB="*res://Scripts/SkillDatabase.gd"
 
 [display]
 
-window/size/viewport_width=720
-window/size/viewport_height=480
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 
 [global_group]

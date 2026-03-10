@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://ce7k72gp8ixbi"]
 
 [ext_resource type="Script" uid="uid://0n1upa2t51fu" path="res://Skills/Wizard/fire_ball.gd" id="1_pwp6n"]
-[ext_resource type="Texture2D" uid="uid://cml66u1eb3rpo" path="res://Assets/Icons/fireball_icon.png" id="1_uknnq"]
+[ext_resource type="Texture2D" uid="uid://cml66u1eb3rpo" path="res://Assets/UI/fireball_icon.png" id="1_uknnq"]
 [ext_resource type="Texture2D" uid="uid://cvyawiwcqnxhx" path="res://Assets/VFX/T_basic1_vfx.PNG" id="2_po3vs"]
 
 [sub_resource type="Environment" id="Environment_i2uoe"]

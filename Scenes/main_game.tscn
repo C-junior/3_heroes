@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://kuka26t1av42"]
+
+[ext_resource type="Script" uid="uid://dl0eksgqnhjun" path="res://main_game.gd" id="1_1xiyh"]
+[ext_resource type="Texture2D" uid="uid://dlplcfdehgpxh" path="res://Assets/arena_bg.jpg" id="1_5dba5"]
+[ext_resource type="Script" uid="uid://bqjwj8jw8xf8v" path="res://Scripts/base.gd" id="3_base"]
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_1xiyh")
+
+[node name="ArenaBg" type="Sprite2D" parent="."]
+position = Vector2(640, 360)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_5dba5")
+
+[node name="Base" type="StaticBody2D" parent="."]
+position = Vector2(100, 360)
+script = ExtResource("3_base")
+
+[node name="BaseSprite" type="Sprite2D" parent="Base"]
+modulate = Color(0.8, 0.7, 0.5, 1)
+scale = Vector2(0.15, 0.15)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base"]
+
+[node name="PlayerCharacters" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]

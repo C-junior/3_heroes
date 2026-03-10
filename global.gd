@@ -1,25 +1,18 @@
 # global.gd
+# Backwards compatibility wrapper — primary currency management moved to GameManager
 extends Node
 class_name Global
 
 @export var currency: int = 0
 
-# Cache reference to the balance label
-@onready var balance_label: Label = get_node("/root/UI/Currency").get_child(1)
-
-
 func _ready():
-	currency = 100  # Initialize starting gold
-	_update_balance_ui()
+	currency = GameManager.gold
 
-# Adds currency (gold) and updates the UI
+# Adds currency (gold) via GameManager
 func add_currency(amount: int):
-	currency += amount
-	_update_balance_ui()
+	GameManager.add_gold(amount)
+	currency = GameManager.gold
 
-# Function to update the balance label in the UI
+# Update balance UI (no longer relies on hardcoded node path)
 func _update_balance_ui():
-	if balance_label != null:
-		balance_label.text = str(currency)
-	else:
-		print("Error: Balance label not found!")
+	currency = GameManager.gold
