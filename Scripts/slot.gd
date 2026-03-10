@@ -10,10 +10,9 @@ enum SlotType { WEAPON, ARMOR, ACCESSORY, ALL }
 @export var slot_type: SlotType = SlotType.ALL
 
 
-#@onready var manager = get_parent().get_parent().get_parent()
-@onready var manager = global
+@onready var manager = get_node_or_null("../../..") as Panel
+@onready var item_manager = get_node_or_null("/root/Game/ItemManager") as ItemManager
 @onready var texture_rect: TextureRect = $TextureRect
-@onready var item_manager = itemmanager
 
 var active_character: BaseCharacter = null
 
@@ -30,7 +29,9 @@ var active_character: BaseCharacter = null
 # Initialize the slot
 func _ready():
 	# Listen for character switching from the UI
-	UI.connect("character_switched", Callable(self, "_on_character_switched"))
+	var ui = get_node_or_null("/root/Game/UI")
+	if ui:
+		ui.connect("character_switched", Callable(self, "_on_character_switched"))
 	
 
 # Handle when the character is switched

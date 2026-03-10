@@ -16,16 +16,19 @@ func _ready():
 	sprite = $ClericSprite
 	character_type = constants.CharacterType.HEALER  # Clerics are Healers
 	base_max_health = cleric_max_health
-	current_health = base_max_health
+	base_attack_damage = attack_damage
+	base_defense = defense
+	base_move_speed = move_speed
 	heal_timer.wait_time = heal_cooldown
 	heal_timer.one_shot = true
 	add_child(heal_timer)
 	heal_timer.connect("timeout", Callable(self, "_on_heal_timeout"))
-	health_progress_bar.max_value = cleric_max_health
-	health_progress_bar.value = current_health
+	super._ready()
 	add_to_group("PlayerCharacters")
 
 func _process(_delta: float):
+	if is_dead:
+		return
 	# Find nearest injured ally to heal
 	var injured_ally = find_injured_ally()
 	if injured_ally:
@@ -65,9 +68,10 @@ func _on_heal_timeout():
 
 # Learn a new skill and initialize it for the Cleric
 func learn_skill(skill: Skill):
-	learned_skills.append(skill)
+	super.learn_skill(skill) # Call base to handle generic logic
 	skill.init(self)  # Initialize skill for the Cleric instance
-	_setup_skill_cooldown(skill)  # Set up cooldown for the skill
+	if not skill.is_passive:
+		_setup_skill_cooldown(skill)
 	print("Cleric learned skill: ", skill.name)
 
 # Set up cooldown timers for skills
@@ -86,7 +90,7 @@ func _on_skill_ready(skill: Skill):
 
 # Trigger the skill and start cooldown
 func use_skills():
-	for skill in learned_skills:
+	for skill in active_skills:
 		if cooldown_timers.has(skill) and cooldown_timers[skill].is_stopped():
 			skill.apply_effect(self)  # Apply the skill effect
 			cooldown_timers[skill].start()  # Start the cooldown timer after using the skill

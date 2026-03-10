@@ -1,9 +1,12 @@
 # weapon_mastery.gd
 extends Skill
 
-@export var attack_bonus: int = 10  # +10 attack bonus
+@export var is_passive_override: bool = true # Force true for this skill type
 
+func _init():
+	is_passive = true
+	attack_bonus = 10 # Set the bonus for the base system
 
 func apply_effect(character: BaseCharacter) -> void:
-	character.attack_damage += attack_bonus
-	print("Weapon Mastery applied: +", attack_bonus, " attack damage")
+	# Deprecated direct application, handled by update_stats now
+	pass

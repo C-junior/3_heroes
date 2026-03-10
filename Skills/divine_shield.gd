@@ -25,11 +25,15 @@ func apply_effect(character: BaseCharacter) -> void:
 # Find the lowest health ally and apply the shield
 func _trigger_divine_shield(character: BaseCharacter) -> void:
 	var allies = character.get_tree().get_nodes_in_group("PlayerCharacters")
-	var lowest_health_ally: Node2D = null
+	var lowest_health_ally: BaseCharacter = null
 	var lowest_health: int = 60000
 
 	# Find the ally with the lowest health
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		if ally != character and ally.get_health() < lowest_health:
 			lowest_health_ally = ally
 			lowest_health = ally.get_health()

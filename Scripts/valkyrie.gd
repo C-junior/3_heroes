@@ -12,13 +12,6 @@ extends BaseCharacter
 # Skill-related variables
 var cooldown_timers: Dictionary = {}
 
-@export var current_item: Item:
-	set(value):
-		current_item = value
-		print("current item valk? ", current_item)
-		if current_item != null:
-			valkyrie_attack_damage += current_item.attack_bonus 
-
 # Initialize the Valkyrie
 func _ready():
 	sprite = $ValkyrieSprite
@@ -26,19 +19,10 @@ func _ready():
 	base_attack_damage = valkyrie_attack_damage
 	base_defense = valkyrie_defense
 	base_move_speed = valkyrie_move_speed
-	current_health = base_max_health
-	current_item = null  # Start without any item equipped
-	character_type = constants.CharacterType.VALKYRIE
-	health_progress_bar.max_value = base_max_health  # Set max value for the progress bar
-	health_progress_bar.value = current_health  # Initialize progress bar value
-
-	attack_timer.wait_time = valkyrie_attack_cooldown  # Attack timer setup
-	attack_timer.start()  # Start the timer
-	update_stats()
-	
+	base_attack_cooldown = valkyrie_attack_cooldown
+	character_type = Constants.CharacterType.VALKYRIE
+	super._ready()
 	add_to_group("PlayerCharacters")
-	update_level_ui()
-	learned_skills = []
 
 # Valkyrie-specific weapon restrictions
 #func can_equip(item: Item) -> bool:
@@ -49,9 +33,10 @@ func _ready():
 
 # Learn a new skill and initialize it for the Cleric
 func learn_skill(skill: Skill):
-	learned_skills.append(skill)
+	super.learn_skill(skill)
 	skill.init(self)  # Initialize skill for the Cleric instance
-	_setup_skill_cooldown(skill)  # Set up cooldown for the skill
+	if not skill.is_passive:
+		_setup_skill_cooldown(skill)
 	print("Valkyrie learned skill: ", skill.name)
 
 # Set up cooldown timers for skills
@@ -70,16 +55,16 @@ func _on_skill_ready(skill: Skill):
 
 # Trigger the skill and start cooldown
 func use_skills():
-	for skill in learned_skills:
+	for skill in active_skills:
 		if cooldown_timers.has(skill) and cooldown_timers[skill].is_stopped():
 			skill.apply_effect(self)  # Apply the skill effect
 			cooldown_timers[skill].start()  # Start the cooldown timer after using the skill
 			print("Skill used:", skill.name)
 
 func _process(delta: float):
+	if is_dead:
+		return
 	# Find nearest enemy to attack
-	target = find_nearest_target("Enemies")
-	if target:
-		move_and_attack(target, delta)
+	find_target_and_attack()
 	
 	use_skills()

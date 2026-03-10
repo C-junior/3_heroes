@@ -12,6 +12,7 @@ var knockback_reduction_rate: float = 200
 var is_slowed: bool = false
 var original_speed: int
 var taunt_timer: Timer = null
+var taunt_target: Node2D = null
 
 # Wave scaling
 var hp_multiplier: float = 1.0
@@ -44,8 +45,10 @@ func apply_wave_scaling(hp_mult: float, dmg_mult: float):
 	dmg_multiplier = dmg_mult
 
 func _process(delta: float):
-	# Try to find a player to attack first
-	target = find_nearest_target("PlayerCharacters")
+	if taunt_target and is_instance_valid(taunt_target):
+		target = taunt_target
+	else:
+		target = find_nearest_target("PlayerCharacters")
 	
 	if target:
 		move_and_attack(target, delta)
@@ -102,6 +105,14 @@ func restore_speed():
 	move_speed = original_speed
 	sprite.modulate = Color(1, 1, 1)
 	is_slowed = false
+
+func force_attack(forced_target: Node2D, duration: float) -> void:
+	taunt_target = forced_target
+	taunt_timer.wait_time = duration
+	taunt_timer.start()
+
+func _on_taunt_end() -> void:
+	taunt_target = null
 
 @export var xp_reward: int = 100
 @export var min_gold_reward: int = 10

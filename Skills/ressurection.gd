@@ -27,6 +27,10 @@ func _trigger_resurrection(character: BaseCharacter) -> void:
 	var resurrected = false
 
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		if ally.is_dead and ally.has_method("resurrect"):
 			ally.resurrect()  # Call the resurrect function on the dead ally
 			resurrected = true

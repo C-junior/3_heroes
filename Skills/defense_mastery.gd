@@ -1,9 +1,10 @@
 # defense_mastery.gd
 extends Skill
 
-@export var defense_bonus: int = 20  # +5 defense bonus
-
+func _init():
+	is_passive = true
+	defense_bonus = 20 # Set the bonus for the base system
 
 func apply_effect(character: BaseCharacter) -> void:
-	character.defense += defense_bonus
-	print("Defense Mastery applied: +", defense_bonus, " defense")
+	# Deprecated direct application, handled by update_stats now
+	pass

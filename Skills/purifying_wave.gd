@@ -35,6 +35,10 @@ func _trigger_purifying_wave(character: BaseCharacter) -> void:
 
 	# Heal and cleanse allies
 	for ally in allies:
+		# Skip if not a BaseCharacter (safety check)
+		if not ally is BaseCharacter:
+			continue
+			
 		# Heal the ally by a percentage of their max health
 		var heal_amount = ally.max_health * heal_percentage
 		ally.receive_heal(heal_amount)

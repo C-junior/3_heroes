@@ -12,10 +12,9 @@
 radius = 15.0
 height = 70.0
 
-[node name="BaseCharacter" type="CharacterBody2D" node_paths=PackedStringArray("attack_timer")]
+[node name="BaseCharacter" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_tcw2m")
-attack_timer = NodePath("Timer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_t6ned")

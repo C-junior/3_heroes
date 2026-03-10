@@ -9,51 +9,28 @@ extends BaseCharacter
 # sprite inherited from BaseCharacter
 
 @export var wizard_attack_cooldown: float = 2.0
-@onready var items = ItemDB
-
 # Skill-related variables
 var cooldown_timers: Dictionary = {}
-
-@onready var wizard_health_progress_bar = $HealthProgressBAr
-
-@onready var itemDataBase = ItemDB
-
-@export var current_item: Item:
-	set(value):
-		current_item = value
-		if current_item != null:
-			wizard_attack_damage += current_item.attack_bonus
 
 func _ready():
 	sprite = $WizardSprite
 	base_max_health = wizard_max_health
 	base_attack_damage = wizard_attack_damage
 	base_defense = wizard_defense
-	attack_range = wizard_attack_range
-
+	base_attack_range = wizard_attack_range
 	base_move_speed = wizard_move_speed
-	current_health = base_max_health
-	current_item = null  # Start without any item equipped
-
-	character_type = constants.CharacterType.MAGE  # Wizards are Mages
-
-	health_progress_bar.max_value = base_max_health  # Set max value for the progress bar
-	health_progress_bar.value = current_health  # Initialize progress bar value
-
-
-	attack_timer.wait_time = wizard_attack_cooldown
-	attack_timer.start()
-	update_stats()
-	update_health_label()
-
+	base_attack_cooldown = wizard_attack_cooldown
+	attack_range = wizard_attack_range
+	character_type = Constants.CharacterType.MAGE
+	super._ready()
 	add_to_group("PlayerCharacters")
-	learned_skills = []
 
 # Learn a new skill and initialize its timers
 func learn_skill(skill: Skill):
-	learned_skills.append(skill)
-	_setup_skill_cooldown(skill)
+	super.learn_skill(skill)
 	skill.init(self)
+	if not skill.is_passive:
+		_setup_skill_cooldown(skill)
 	print("Learned skill:", skill.name)
 
 # Set up cooldown timers for skills
@@ -71,7 +48,7 @@ func _on_skill_ready(skill: Skill):
 
 # Trigger the skill and start cooldown
 func use_skills():
-	for skill in learned_skills:
+	for skill in active_skills:
 		if cooldown_timers.has(skill) and cooldown_timers[skill].is_stopped():
 			skill.apply_effect(self)
 			cooldown_timers[skill].start()
@@ -94,9 +71,8 @@ func _shoot_magic_bolt(p_target: Node2D):
 
 # Mana regeneration logic
 func _process(_delta: float):
-	# Regenerate mana over time
-	#wizard_mana = min(wizard_mana + mana_regen_rate * delta, 100)
-	#mana_progress_bar.value = wizard_mana
+	if is_dead:
+		return
 
 	# Find nearest enemy to attack
 	target = find_nearest_target("Enemies")

@@ -129,3 +129,7 @@ func _on_close_shop():
 
 func set_game_speed(speed: float):
 	Engine.time_scale = speed
+
+func trigger_screen_shake(intensity: float):
+	# Simple camera shake if needed
+	pass
