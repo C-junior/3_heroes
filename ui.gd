@@ -1,6 +1,6 @@
 # ui.gd
 extends CanvasLayer
-class_name UI
+
 
 @onready var inventory: GridContainer = %Inventory   # Shared inventory to display the active character's items
 @onready var balance_label: Label = %Balance
@@ -88,6 +88,7 @@ func _ready():
 	_create_game_end_panel()
 	_create_kill_counter()
 	_create_reroll_buttons()
+	_create_prestige_panel()
 
 func _resolve_scene_refs():
 	var scene_root = get_tree().current_scene
@@ -349,9 +350,11 @@ func _get_learned_skill_names(character: BaseCharacter) -> Array:
 	return learned_names
 
 func _build_skill_tooltip(skill: Skill) -> String:
+	var prefix = "🟢 PASSIVE" if skill.is_passive else "⚡ ACTIVE"
+	var text = prefix + "\n" + skill.description
 	if skill.cooldown > 0.0:
-		return "%s\nCooldown: %.1fs" % [skill.description, skill.cooldown]
-	return skill.description
+		text += "\nCooldown: %.1fs" % skill.cooldown
+	return text
 
 
 # ============================================================
@@ -706,3 +709,116 @@ func _create_kill_counter():
 	kill_counter_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
 	kill_counter_label.position = Vector2(10, 10)
 	add_child(kill_counter_label)
+
+# ============================================================
+# PRESTIGE SHOP
+# ============================================================
+var prestige_panel: PanelContainer = null
+var prestige_items_container: VBoxContainer = null
+var current_medals_label: Label = null
+
+func _create_prestige_panel():
+	var pbtn = Button.new()
+	pbtn.name = "PrestigeButton"
+	pbtn.text = "🌟 Meta-Upgrades"
+	pbtn.custom_minimum_size = Vector2(160, 45)
+	pbtn.add_theme_font_size_override("font_size", 16)
+	pbtn.position = Vector2(1100, 10) # Top-right corner
+	pbtn.connect("pressed", Callable(self, "_on_prestige_shop_pressed"))
+	add_child(pbtn)
+	
+	prestige_panel = PanelContainer.new()
+	prestige_panel.name = "PrestigePanel"
+	prestige_panel.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.1, 0.1, 0.2, 0.95)
+	style.border_color = Color(0.4, 0.8, 1.0)
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.content_margin_left = 15
+	style.content_margin_right = 15
+	style.content_margin_top = 15
+	style.content_margin_bottom = 15
+	prestige_panel.add_theme_stylebox_override("panel", style)
+	
+	var vbox = VBoxContainer.new()
+	prestige_panel.add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "🌟 PRESTIGE UPGRADES"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 20)
+	title.add_theme_color_override("font_color", Color(0.4, 0.8, 1.0))
+	vbox.add_child(title)
+	
+	current_medals_label = Label.new()
+	current_medals_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(current_medals_label)
+	
+	var sep = HSeparator.new()
+	vbox.add_child(sep)
+	
+	prestige_items_container = VBoxContainer.new()
+	vbox.add_child(prestige_items_container)
+	
+	var close_btn = Button.new()
+	close_btn.text = "Close"
+	close_btn.connect("pressed", Callable(self, "_on_prestige_shop_pressed"))
+	vbox.add_child(close_btn)
+	
+	prestige_panel.anchors_preset = Control.PRESET_CENTER
+	prestige_panel.position = Vector2(400, 150)
+	prestige_panel.custom_minimum_size = Vector2(400, 300)
+	prestige_panel.visible = false
+	add_child(prestige_panel)
+	
+	GameManager.connect("medals_changed", Callable(self, "_populate_prestige_shop"))
+
+func _on_prestige_shop_pressed():
+	prestige_panel.visible = !prestige_panel.visible
+	if prestige_panel.visible:
+		_populate_prestige_shop()
+
+func _populate_prestige_shop(_dummy = 0):
+	if prestige_items_container == null:
+		return
+		
+	current_medals_label.text = "Medals Available: " + str(GameManager.prestige_medals)
+	
+	for child in prestige_items_container.get_children():
+		child.queue_free()
+	
+	var upgrades = [
+		{"id": "base_health", "name": "Fortified Base (+10% HP)", "base_cost": 5},
+		{"id": "starting_gold", "name": "Wealthy Start (+50 Gold)", "base_cost": 3},
+		{"id": "max_units", "name": "Command Tactics (+1 Max Unit)", "base_cost": 10},
+		{"id": "xp_boost", "name": "Wisdom (+5% XP Gain)", "base_cost": 7}
+	]
+	
+	for up in upgrades:
+		var level = GameManager.prestige_upgrades.get(up["id"], 0)
+		var cost = (level + 1) * up["base_cost"]
+		
+		var hbox = HBoxContainer.new()
+		
+		var lbl = Label.new()
+		lbl.text = "%s (Lv %d)" % [up["name"], level]
+		lbl.custom_minimum_size = Vector2(250, 0)
+		hbox.add_child(lbl)
+		
+		var btn = Button.new()
+		btn.text = "Buy (%d M)" % cost
+		btn.custom_minimum_size = Vector2(100, 0)
+		if GameManager.prestige_medals < cost:
+			btn.disabled = true
+		btn.connect("pressed", Callable(self, "_on_buy_prestige").bind(up["id"]))
+		
+		hbox.add_child(btn)
+		prestige_items_container.add_child(hbox)
+
+func _on_buy_prestige(upgrade_id: String):
+	if GameManager.purchase_prestige_upgrade(upgrade_id):
+		_populate_prestige_shop()

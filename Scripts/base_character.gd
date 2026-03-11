@@ -56,6 +56,8 @@ var target: Node2D  # Current attack target
 var sprite: Node2D   # Subclasses should assign their sprite node here (e.g. KnightSprite)
 var is_dead: bool = false
 
+var _original_sprite_scale: Vector2 = Vector2.ZERO
+
 # Reference to the level system
 signal skill_unlock_available(unit, skills_array)
 
@@ -145,6 +147,7 @@ func take_damage(damage: int):
 		update_health_label()
 		_play_feedback(Color(1.0, 0.35, 0.35), 0.12)
 		_shake_game_view(clamp(reduced_damage / 15.0, 2.0, 8.0))
+		VFX.spawn_hit_particles(get_tree().current_scene, global_position, Color(1.0, 0.35, 0.35))
 		if current_health <= 0:
 			die()
 
@@ -164,6 +167,7 @@ func move_and_attack(p_target: Node2D, _delta: float):
 # Character dies
 func die():
 	is_dead = true
+	VFX.spawn_death_particles(get_tree().current_scene, global_position)
 	queue_free()
 
 # Handle timeout after attack
@@ -203,6 +207,7 @@ func _on_leveled_up():
 	current_health = max_health
 	update_health_label()
 	update_level_ui()
+	VFX.spawn_level_up_particles(get_tree().current_scene, global_position)
 	_check_skill_unlock()
 
 func _check_skill_unlock():
@@ -319,12 +324,14 @@ func _play_feedback(flash_color: Color, punch: float):
 	var visual = get_visual_node()
 	if visual == null:
 		return
+	if _original_sprite_scale == Vector2.ZERO:
+		_original_sprite_scale = visual.scale
 	visual.modulate = flash_color
-	visual.scale = Vector2.ONE * (1.0 + punch)
+	visual.scale = _original_sprite_scale * (1.0 + punch)
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(visual, "modulate", Color.WHITE, 0.14)
-	tween.tween_property(visual, "scale", Vector2.ONE, 0.14)
+	tween.tween_property(visual, "scale", _original_sprite_scale, 0.14)
 
 func _shake_game_view(intensity: float):
 	var main_node = get_tree().current_scene

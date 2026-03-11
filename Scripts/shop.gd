@@ -14,14 +14,23 @@ func _ready():
 		print("Vendor node not found!")
 	load_items(items)
 
-func load_items(items):
+func load_items(new_items):
 	reset()
-	for item in items:
-		add_item(item)
+	var slots = get_children()
+	var slot_index = 0
+	for item in new_items:
+		while slot_index < slots.size() and slots[slot_index].item != null:
+			slot_index += 1
+		
+		if slot_index < slots.size():
+			slots[slot_index].item = item
+			slot_index += 1
 
 func reset():
 	for slot in get_children():
-		slot.item = null
+		var locked = slot.get("is_locked")
+		if locked == null or not locked:
+			slot.item = null
 	
 
 #func buy_item(item: Item, character: BaseCharacter):
@@ -48,9 +57,11 @@ func close_shop():
 		print("Vendor node not found!")
 
 func _on_reroll_button_pressed():
-	manager.currency -= 20
-	var all_items = item_database.get_all_items()
-	var new_items = vendor.get_random_items(all_items, 5)  # Fetch new items from item manager
-	print("Rerolling items...", manager.currency)
-	load_items(new_items)  # Load new items into the shop
-	global._update_balance_ui()
+	if GameManager.spend_gold(20):
+		var all_items = item_database.get_all_items()
+		var new_items = vendor.get_random_items(all_items, 5)  # Fetch new items from item manager
+		print("Rerolling items...")
+		load_items(new_items)  # Load new items into the shop
+		global._update_balance_ui()
+	else:
+		print("Not enough gold to reroll!")

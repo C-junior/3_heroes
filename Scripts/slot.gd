@@ -15,16 +15,21 @@ enum SlotType { WEAPON, ARMOR, ACCESSORY, ALL }
 @onready var texture_rect: TextureRect = $TextureRect
 
 var active_character: BaseCharacter = null
+var is_locked: bool = false
+var lock_btn: Button = null
 
 @export var item : Item = null:
 	set(value):
 		item = value
 		if value != null:
 			texture_rect.texture = value.icon
-			
-			#_update_tooltip()  # Update the tooltip text when the item is set
+			if lock_btn: lock_btn.visible = true
 		else:
 			texture_rect.texture = null
+			is_locked = false
+			if lock_btn:
+				lock_btn.text = "🔓"
+				lock_btn.visible = false
 
 # Initialize the slot
 func _ready():
@@ -32,6 +37,20 @@ func _ready():
 	var ui = get_node_or_null("/root/Game/UI")
 	if ui:
 		ui.connect("character_switched", Callable(self, "_on_character_switched"))
+	
+	if get_parent() and get_parent().name == "Shop":
+		lock_btn = Button.new()
+		lock_btn.text = "🔓"
+		lock_btn.custom_minimum_size = Vector2(24, 24)
+		lock_btn.position = Vector2(-10, -10) # Top-left offset slightly
+		lock_btn.connect("pressed", Callable(self, "_toggle_lock"))
+		add_child(lock_btn)
+		lock_btn.visible = (item != null)
+
+func _toggle_lock():
+	if not item: return
+	is_locked = !is_locked
+	lock_btn.text = "🔒" if is_locked else "🔓"
 	
 
 # Handle when the character is switched
@@ -73,7 +92,7 @@ func _can_drop_data(_pos, data):
 	if data is Slot:
 		if destination == "Shop" and source == "Inventory" and not item:
 			return true
-		elif destination == "Inventory" and source == "Shop" and manager.currency >= data.item.price and _item_fits_slot(data.item) and not item:
+		elif destination == "Inventory" and source == "Shop" and GameManager.gold >= data.item.price and _item_fits_slot(data.item) and not item:
 			return true
 		elif destination == source:
 			return true
@@ -123,10 +142,11 @@ func selling(data):
 		return
 
 	print("Sold " + data.item.name, data.item.price)
-	manager.currency += data.item.price
+	GameManager.add_gold(data.item.price)
 	manager._update_balance_ui()
 	
 	# Unequip item by calling the unequip_item function
+	item_manager.unequip_item_from_character(active_character, data.item)
 	item_manager.unequip_item_from_character(active_character, data.item)
 
 func buying(data):
@@ -135,6 +155,8 @@ func buying(data):
 		return
 
 	print("Bought " , data.item.type ,data.item.name, data.item.price)
-	manager.currency -= data.item.price
-	manager._update_balance_ui()
-	item_manager.equip_item_to_character(active_character, data.item)
+	if GameManager.spend_gold(data.item.price):
+		manager._update_balance_ui()
+		item_manager.equip_item_to_character(active_character, data.item)
+	else:
+		print("Cannot afford item!")

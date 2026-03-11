@@ -3,6 +3,9 @@ extends Skill
 @export var proc_chance: float = 0.25  # 25% chance to proc
 @export var bonus_damage_percentage: float = 1.2  # 120% attack damage
 
+func _init():
+	is_passive = true
+
 func init(character: BaseCharacter) -> void:
 	print(character.name, "has learned Fenrir’s Wrath. Each attack has a", proc_chance * 100, "% chance to deal", bonus_damage_percentage * 100, "% bonus damage.")
 

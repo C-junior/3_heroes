@@ -40,9 +40,52 @@ func _ready():
 	taunt_timer.connect("timeout", Callable(self, "_on_taunt_end"))
 
 # Called by wave_manager to scale enemy stats
-func apply_wave_scaling(hp_mult: float, dmg_mult: float):
+func apply_wave_scaling(hp_mult: float, dmg_mult: float, elite_mod: String = ""):
 	hp_multiplier = hp_mult
 	dmg_multiplier = dmg_mult
+	if elite_mod != "":
+		make_elite(elite_mod)
+
+func make_elite(mod: String):
+	scale *= 1.4 # visually bigger
+	
+	var mod_hp_mult = 1.0
+	
+	match mod:
+		"Giant":
+			scale *= 1.3
+			mod_hp_mult = 2.0
+			move_speed = int(move_speed * 0.7)
+			sprite.modulate = Color(1.2, 0.8, 0.8)
+		"Swift":
+			move_speed = int(move_speed * 1.8)
+			attack_cooldown *= 0.6
+			sprite.modulate = Color(0.8, 1.2, 0.8)
+		"Armored":
+			defense += 15
+			sprite.modulate = Color(0.6, 0.6, 0.6)
+		"Frenzied":
+			attack_damage = int(attack_damage * 1.5)
+			attack_cooldown *= 0.5
+			sprite.modulate = Color(1.5, 0.5, 0.5)
+			
+	max_health = int(max_health * mod_hp_mult)
+	current_health = max_health
+	health_progress_bar.max_value = max_health
+	health_progress_bar.value = current_health
+	original_speed = move_speed
+	
+	var title = Label.new()
+	title.text = "Elite " + mod
+	title.add_theme_color_override("font_color", Color(1, 0.8, 0))
+	title.add_theme_font_size_override("font_size", 12)
+	title.position = Vector2(-25, -50)
+	title.z_index = 30
+	add_child(title)
+	
+	xp_reward *= 3
+	min_gold_reward *= 3
+	max_gold_reward *= 3
 
 func _process(delta: float):
 	if taunt_target and is_instance_valid(taunt_target):
@@ -134,4 +177,5 @@ func die():
 			player.add_xp_to_party(xp_bonus)
 			break  # add_xp_to_party distributes to all
 	
+	VFX.spawn_death_particles(get_tree().current_scene, global_position, Color(0.2, 0.8, 0.2)) # Greenish blood for goblins
 	queue_free()

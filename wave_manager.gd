@@ -2,6 +2,42 @@
 # Procedural wave generation with infinite scaling
 extends Node
 
+signal wave_event_triggered(event_data: Dictionary)
+
+var current_event: Dictionary = {}
+
+func clear_wave_event():
+	if current_event.has("type") and current_event["type"] == "fog_of_war":
+		for hero in get_tree().get_nodes_in_group("PlayerCharacters"):
+			if "base_attack_range" in hero:
+				hero.attack_range = hero.base_attack_range
+	current_event = {}
+
+func generate_wave_event(wave: int):
+	clear_wave_event()
+	
+	if wave >= 3 and randf() < 0.25:
+		var events = [
+			{"type": "blood_moon", "title": "🩸 BLOOD MOON", "description": "Enemies deal 50% more damage!", "color": Color.RED},
+			{"type": "fog_of_war", "title": "🌫️ FOG OF WAR", "description": "Hero attack ranges halved!", "color": Color.DARK_GRAY},
+			{"type": "blessing", "title": "✨ DIVINE BLESSING", "description": "Heroes and base heavily healed!", "color": Color.GOLD}
+		]
+		current_event = events[randi() % events.size()]
+		emit_signal("wave_event_triggered", current_event)
+		
+		match current_event["type"]:
+			"fog_of_war":
+				for hero in get_tree().get_nodes_in_group("PlayerCharacters"):
+					if "base_attack_range" in hero:
+						hero.attack_range = hero.base_attack_range * 0.5
+			"blessing":
+				for hero in get_tree().get_nodes_in_group("PlayerCharacters"):
+					if hero.has_method("recover_between_waves"):
+						hero.recover_between_waves(0.5)
+				var base = get_tree().current_scene.get_node_or_null("Base")
+				if base:
+					base.repair(int(base.base_max_health * 0.3))
+
 # Enemy scene paths
 const ENEMY_SCENES = {
 	"goblin": "res://Enemies/goblin.tscn",
@@ -96,6 +132,9 @@ func _get_regular_enemies(wave: int, config: Dictionary) -> Array:
 	var hp_mult = _get_hp_multiplier(wave, config)
 	var dmg_mult = _get_dmg_multiplier(wave, config)
 	
+	if current_event.has("type") and current_event["type"] == "blood_moon":
+		dmg_mult *= 1.5
+	
 	if available_types.size() == 1:
 		enemies.append({
 			"scene_path": ENEMY_SCENES[available_types[0]],
@@ -120,8 +159,26 @@ func _get_regular_enemies(wave: int, config: Dictionary) -> Array:
 					"scene_path": ENEMY_SCENES[type_name],
 					"count": count,
 					"hp_multiplier": hp_mult,
-					"dmg_multiplier": dmg_mult
+					"dmg_multiplier": dmg_mult,
+					"elite_modifier": ""
 				})
+	
+	# Chance to spawn an Elite starting from Wave 4
+	if wave >= 4 and enemies.size() > 0 and randf() < 0.4 + (wave * 0.02):
+		var elite_idx = randi() % enemies.size()
+		var elite_type = enemies[elite_idx]["scene_path"]
+		
+		if enemies[elite_idx]["count"] > 1:
+			enemies[elite_idx]["count"] -= 1
+			var elite_modifiers = ["Giant", "Swift", "Armored", "Frenzied"]
+			var mod = elite_modifiers[randi() % elite_modifiers.size()]
+			enemies.append({
+				"scene_path": elite_type,
+				"count": 1,
+				"hp_multiplier": hp_mult * 3.0,
+				"dmg_multiplier": dmg_mult * 1.5,
+				"elite_modifier": mod
+			})
 	
 	return enemies
 

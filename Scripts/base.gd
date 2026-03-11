@@ -29,6 +29,12 @@ func take_damage(amount: int):
 	var reduced = max(amount - base_defense, 1)
 	current_health -= reduced
 	emit_signal("base_damaged", current_health, base_max_health)
+	
+	# Shake the screen when the base takes damage
+	var main_node = get_tree().current_scene
+	if main_node and main_node.has_method("trigger_screen_shake"):
+		main_node.trigger_screen_shake(clamp(reduced / 10.0, 3.0, 10.0))
+		
 	if current_health <= 0:
 		current_health = 0
 		emit_signal("base_destroyed")
